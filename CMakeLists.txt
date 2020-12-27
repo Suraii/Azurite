@@ -7,5 +7,8 @@ project(Azurite VERSION 0.1)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# DEV cmake test executable
-add_executable(test src/test_main.cpp)
+# Azurite Engine's sources directory
+add_subdirectory(engine)
+
+# Example games made with Azurite
+add_subdirectory(examples/test)
