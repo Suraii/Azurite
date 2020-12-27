@@ -7,6 +7,12 @@
 *.o
 *.obj
 
+# Cmake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+*.cmake
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -30,3 +36,4 @@
 *.exe
 *.out
 *.app
+test
