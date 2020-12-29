@@ -8,13 +8,21 @@ using namespace Azurite;
 
 StateMachine::StateMachine(Game &owner) : m_owner(owner) {}
 
-StateMachine::~StateMachine() {}
+StateMachine::~StateMachine()
+{
+}
 
-void StateMachine::update() {}
+void StateMachine::update()
+{
+}
 
-void StateMachine::setState(std::unique_ptr<AState>) {}
+void StateMachine::setState(std::unique_ptr<AState>)
+{
+}
 
-void StateMachine::stackState(std::unique_ptr<AState>) {}
+void StateMachine::stackState(std::unique_ptr<AState> state)
+{
+}
 
 void StateMachine::leaveCurrentState() {}
 
@@ -28,13 +36,19 @@ std::optional<std::reference_wrapper<AState>> StateMachine::getCurrentState() co
 ** ASTATE IMPLEMENTATION
 */
 
-AState::AState() : m_id(0) {}
+unsigned AState::statesCount = 0;
+
+AState::AState() : m_id(AState::statesCount++)
+{}
 
 AState::~AState() {}
 
 unsigned AState::getId() const
 {
-    return 0;
+    return m_id;
 }
 
-void AState::sendEvent(const Event event) {}
+void AState::sendEvent(const Event event)
+{
+    m_events.push(std::move(event));
+}

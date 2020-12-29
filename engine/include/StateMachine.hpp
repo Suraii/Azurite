@@ -34,6 +34,7 @@ namespace Azurite {
 
     // State abstract parent
     class AState {
+        static unsigned statesCount;
         const unsigned m_id;
     protected:
         std::queue<Event> m_events;
