@@ -8,18 +8,48 @@ using namespace Azurite;
 
 StateMachine::StateMachine(Game &owner) : m_owner(owner) {}
 
-StateMachine::~StateMachine() {}
+StateMachine::~StateMachine()
+{
+    while (getCurrentState())
+        leaveCurrentState();
+}
 
-void StateMachine::update() {}
+void StateMachine::update()
+{
+    if (getCurrentState())
+        getCurrentState()->get().onTick(m_owner);
+}
 
-void StateMachine::setState(std::unique_ptr<AState>) {}
+void StateMachine::setState(std::unique_ptr<AState> state)
+{
+    if (getCurrentState())
+        getCurrentState()->get().onStop(m_owner);
+    (*state).onStart(m_owner);
+    m_states.push(std::move(state));
+}
 
-void StateMachine::stackState(std::unique_ptr<AState>) {}
+void StateMachine::stackState(std::unique_ptr<AState> state)
+{
+    if (getCurrentState())
+        getCurrentState()->get().onPause(m_owner);
+    (*state).onStart(m_owner);
+    m_states.push(std::move(state));
+}
 
-void StateMachine::leaveCurrentState() {}
+void StateMachine::leaveCurrentState()
+{
+    if (!getCurrentState())
+        return;
+    getCurrentState()->get().onStop(m_owner);
+    m_states.pop();
+    if (getCurrentState())
+        getCurrentState()->get().onResume(m_owner);
+}
 
 std::optional<std::reference_wrapper<AState>> StateMachine::getCurrentState() const
 {
+    if (!m_states.empty())
+        return *(m_states.top());
     return {};
 }
 
@@ -28,13 +58,19 @@ std::optional<std::reference_wrapper<AState>> StateMachine::getCurrentState() co
 ** ASTATE IMPLEMENTATION
 */
 
-AState::AState() : m_id(0) {}
+unsigned AState::statesCount = 0;
+
+AState::AState() : m_id(AState::statesCount++)
+{}
 
 AState::~AState() {}
 
 unsigned AState::getId() const
 {
-    return 0;
+    return m_id;
 }
 
-void AState::sendEvent(const Event event) {}
+void AState::sendEvent(const Event event)
+{
+    m_events.push(std::move(event));
+}

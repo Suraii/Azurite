@@ -1,6 +1,7 @@
 # Azurite Engine's compilation as a dynamic library
 add_library(azurite_engine SHARED
 src/Game.cpp
+src/StateMachine.cpp
 src/lib.cpp
 )
 
