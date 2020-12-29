@@ -17,11 +17,10 @@ namespace Azurite {
     // State Manager Class
     class StateMachine {
         Game &m_owner;
-        std::stack<std::reference_wrapper<AState>> m_states;
-    private:
+        std::stack<std::unique_ptr<AState>> m_states;
+    public:
     // This method should only be called by the Owner of the state machine
         void update();
-    public:
     // This class should only be built by game class
         StateMachine(Game &owner);
         ~StateMachine();
