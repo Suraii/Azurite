@@ -4,6 +4,7 @@
 #include <string>
 #include "Game.hpp"
 #include "StateMachine.hpp"
+#include "ComponentsStorage.hpp"
 
 using namespace Azurite;
 
@@ -134,4 +135,23 @@ BOOST_AUTO_TEST_CASE(state_machine_get_curent_state)
     machine.leaveCurrentState();
     BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 9,
     "Returned current state's id isn't valid, expected 9 got " << machine.getCurrentState()->get().getId());
+}
+
+/*
+** COMPONENTS STORAGE TESTS
+*/
+
+BOOST_AUTO_TEST_CASE(components_storage_registering_and_accessing)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+    std::map<unsigned, int> &ints = storage.getStorage<int>();
+    ints[6] = 9;
+    std::map<unsigned, int> &_ints = storage.getStorage<int>();
+    BOOST_CHECK_MESSAGE(_ints.find(6) != _ints.end(),
+    "Couldn't find written int storage");
+    BOOST_CHECK_MESSAGE(_ints[6] == 9,
+    "Wrong value for written int in storage, expected 9 got " << _ints[6]);
 }
