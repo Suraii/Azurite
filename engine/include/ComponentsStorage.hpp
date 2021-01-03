@@ -27,8 +27,13 @@ namespace Azurite {
         ~ComponentsStorage();
 
     // Inner control methods
-        //template<typename... T>
-        //void storeComponents<T...>(unsigned id, T... components);
+        template<typename T>
+        void storeComponent(unsigned id, T components)
+        {
+            std::map<unsigned, T> &storage = getStorage<T>();
+
+            storage[id] = components;
+        }
         template<typename T>
         std::map<unsigned, T> &getStorage()
         {

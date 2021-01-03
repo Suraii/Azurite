@@ -147,11 +147,10 @@ BOOST_AUTO_TEST_CASE(components_storage_registering_and_accessing)
     ComponentsStorage storage(game);
 
     storage.registerComponent<int>();
+    storage.storeComponent(6, 9);
     std::map<unsigned, int> &ints = storage.getStorage<int>();
-    ints[6] = 9;
-    std::map<unsigned, int> &_ints = storage.getStorage<int>();
-    BOOST_CHECK_MESSAGE(_ints.find(6) != _ints.end(),
+    BOOST_CHECK_MESSAGE(ints.find(6) != ints.end(),
     "Couldn't find written int storage");
-    BOOST_CHECK_MESSAGE(_ints[6] == 9,
-    "Wrong value for written int in storage, expected 9 got " << _ints[6]);
+    BOOST_CHECK_MESSAGE(ints[6] == 9,
+    "Wrong value for written int in storage, expected 9 got " << ints[6]);
 }
