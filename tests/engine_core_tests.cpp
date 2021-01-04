@@ -173,17 +173,27 @@ BOOST_AUTO_TEST_CASE(components_storage_joining_storages)
 
     cs.storeComponent(4, 'q');
 
-    std::map<unsigned, std::tuple<int &, char &, bool &>> joined_storages = \
-    cs.join_storages(
+    std::map<unsigned, std::tuple<int &, char &, bool &>> joined_storages_ids = \
+    cs.joinStoragesWithIds(
+        cs.getStorage<int>(),
+        cs.getStorage<char>(),
+        cs.getStorage<bool>()
+    );
+    std::vector<std::tuple<int &, char &, bool &>> joined_storages = \
+    cs.joinStorages(
         cs.getStorage<int>(),
         cs.getStorage<char>(),
         cs.getStorage<bool>()
     );
 
-    BOOST_CHECK_MESSAGE(joined_storages.size() == 1,
-    "Wrong size for joined storages, expected 1, got " << joined_storages.size());
-    BOOST_CHECK_MESSAGE(joined_storages.find(3) != joined_storages.end(),
+    BOOST_CHECK_MESSAGE(joined_storages.size() == joined_storages_ids.size()
+    && joined_storages_ids.size() == 1,
+    "Wrong size for joined storages, expected 1 for both, got " << joined_storages.size()\
+    << " and " << joined_storages_ids.size() << " with ids");
+    BOOST_CHECK_MESSAGE(joined_storages_ids.find(3) != joined_storages_ids.end(),
     "Couldn't find entity 3 in joined storages");
+    BOOST_CHECK_MESSAGE(joined_storages_ids.at(3) == joined_storages.at(0),
+    "Different values in joined storages and joined storages with ids");
 }
 
 BOOST_AUTO_TEST_CASE(components_storage_getting_components)
@@ -204,5 +214,17 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
 
     storage.storeComponent(4, 'q');
 
-    //storage.getComponentsWithIds<int, char, bool>();
+    std::map<unsigned, std::tuple<int &, char &, bool &>> components_ids \
+    = storage.getComponentsWithIds<int, char, bool>();
+    std::vector<std::tuple<int &, char &, bool &>> components \
+    = storage.getComponents<int, char, bool>();
+
+    BOOST_CHECK_MESSAGE(components.size() == components_ids.size()
+    && components_ids.size() == 1,
+    "Wrong size for returned components containers, expected 1 for both, got " << components.size()\
+    << " and " << components_ids.size() << " with ids");
+    BOOST_CHECK_MESSAGE(components_ids.find(3) != components_ids.end(),
+    "Couldn't find entity 3 in returned components containers");
+    BOOST_CHECK_MESSAGE(components_ids.at(3) == components.at(0),
+    "Different values in components containers with  and without ids");
 }
