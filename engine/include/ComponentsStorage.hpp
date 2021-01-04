@@ -58,7 +58,26 @@ namespace Azurite {
         }
 
         template<typename T, typename... R>
-        std::map<unsigned, std::tuple<T&, R&...>> join_storages
+        std::vector<std::tuple<T&, R&...>> joinStorages
+        (std::map<unsigned, T>& first, std::map<unsigned int, R>&... rest)
+        {
+            std::vector<std::tuple<T&, R&...>> output;
+
+            for (auto& [id, component]: first)
+                if (
+                    ((rest.find(id) != rest.end()) && ...)
+                    /*&& (
+                        !(m_owner.stateMachine.getCurrentState())
+                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
+                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == -1
+                    )*/
+                )
+                    output.push_back(std::tuple<T&, R&...>{component, rest.at(id)...});
+            return output;
+        }
+
+        template<typename T, typename... R>
+        std::map<unsigned, std::tuple<T&, R&...>> joinStoragesWithIds
         (std::map<unsigned, T>& first, std::map<unsigned int, R>&... rest)
         {
             std::map<unsigned, std::tuple<T&, R&...>> output;
@@ -75,20 +94,16 @@ namespace Azurite {
                     output.emplace(id, std::tuple<T&, R&...>{component, rest.at(id)...});
             return output;
         }
-        //template<typename First, typename... Rest>
-        //std::vector<std::tuple<T&...>> getComponents<T...>();
-        /*template<typename T, typename... R>
+        template<typename T, typename... R>
+        std::vector<std::tuple<T&, R&...>> getComponents()
+        {
+            return joinStorages(getStorage<T>(), getStorage<R>()...);
+        }
+        template<typename T, typename... R>
         std::map<unsigned, std::tuple<T&, R&...>> getComponentsWithIds()
         {
-            std::map<unsigned, std::tuple<T&, R&...>> output;
-            std::map<unsigned, T> &first = getStorage<T>();
-
-            for (auto &[id, component] : first)
-                if ((getStorage<R>().find(id) != getStorage<R>().end()) && ...)
-                    output.emplace(id, std::tuple<T&, R&...>{compnent, rest.at(id)...});
-            //for (auto &[id, component] : )
-            return output;
-        }*/
+            return joinStoragesWithIds(getStorage<T>(), getStorage<R>()...);
+        }
         //EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
     };
