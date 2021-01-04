@@ -56,10 +56,39 @@ namespace Azurite {
 
             m_components[std::type_index(typeid(T))] = std::move(new_storage);
         }
-        //template<typename T...>
+
+        template<typename T, typename... R>
+        std::map<unsigned, std::tuple<T&, R&...>> join_storages
+        (std::map<unsigned, T>& first, std::map<unsigned int, R>&... rest)
+        {
+            std::map<unsigned, std::tuple<T&, R&...>> output;
+
+            for (auto& [id, component]: first)
+                if (
+                    ((rest.find(id) != rest.end()) && ...)
+                    /*&& (
+                        !(m_owner.stateMachine.getCurrentState())
+                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
+                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == -1
+                    )*/
+                )
+                    output.emplace(id, std::tuple<T&, R&...>{component, rest.at(id)...});
+            return output;
+        }
+        //template<typename First, typename... Rest>
         //std::vector<std::tuple<T&...>> getComponents<T...>();
-        //template<typename T...>
-        //std::map<unsigned, std::tuple<T&...>> getComponentsWithIds<T...>();
+        /*template<typename T, typename... R>
+        std::map<unsigned, std::tuple<T&, R&...>> getComponentsWithIds()
+        {
+            std::map<unsigned, std::tuple<T&, R&...>> output;
+            std::map<unsigned, T> &first = getStorage<T>();
+
+            for (auto &[id, component] : first)
+                if ((getStorage<R>().find(id) != getStorage<R>().end()) && ...)
+                    output.emplace(id, std::tuple<T&, R&...>{compnent, rest.at(id)...});
+            //for (auto &[id, component] : )
+            return output;
+        }*/
         //EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
     };
