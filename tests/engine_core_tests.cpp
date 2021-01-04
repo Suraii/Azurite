@@ -144,13 +144,65 @@ BOOST_AUTO_TEST_CASE(state_machine_get_curent_state)
 BOOST_AUTO_TEST_CASE(components_storage_registering_and_accessing)
 {
     Game game;
-    ComponentsStorage storage(game);
+    ComponentsStorage cs(game);
 
-    storage.registerComponent<int>();
-    storage.storeComponent(6, 9);
-    std::map<unsigned, int> &ints = storage.getStorage<int>();
+    cs.registerComponent<int>();
+    cs.storeComponent(6, 9);
+    std::map<unsigned, int> &ints = cs.getStorage<int>();
     BOOST_CHECK_MESSAGE(ints.find(6) != ints.end(),
     "Couldn't find written int storage");
     BOOST_CHECK_MESSAGE(ints[6] == 9,
     "Wrong value for written int in storage, expected 9 got " << ints[6]);
+}
+
+BOOST_AUTO_TEST_CASE(components_storage_joining_storages)
+{
+    Game game;
+    ComponentsStorage cs(game);
+
+    cs.registerComponent<int>();
+    cs.registerComponent<char>();
+    cs.registerComponent<bool>();
+
+    cs.storeComponent(0, false);
+    cs.storeComponent(0, 'z');
+
+    cs.storeComponent(3, true);
+    cs.storeComponent(3, 't');
+    cs.storeComponent(3, 33);
+
+    cs.storeComponent(4, 'q');
+
+    std::map<unsigned, std::tuple<int &, char &, bool &>> joined_storages = \
+    cs.join_storages(
+        cs.getStorage<int>(),
+        cs.getStorage<char>(),
+        cs.getStorage<bool>()
+    );
+
+    BOOST_CHECK_MESSAGE(joined_storages.size() == 1,
+    "Wrong size for joined storages, expected 1, got " << joined_storages.size());
+    BOOST_CHECK_MESSAGE(joined_storages.find(3) != joined_storages.end(),
+    "Couldn't find entity 3 in joined storages");
+}
+
+BOOST_AUTO_TEST_CASE(components_storage_getting_components)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+    storage.registerComponent<char>();
+    storage.registerComponent<bool>();
+
+    storage.storeComponent(0, false);
+    storage.storeComponent(0, 'z');
+
+    storage.storeComponent(3, true);
+    storage.storeComponent(3, 't');
+    storage.storeComponent(3, 33);
+
+    storage.storeComponent(4, 'q');
+
+    //storage.getComponentsWithIds<int, char, bool>();
 }
