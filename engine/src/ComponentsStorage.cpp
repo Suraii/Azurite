@@ -29,10 +29,20 @@ EntityBuilder::~EntityBuilder()
 
 void EntityBuilder::build()
 {
+    if (m_owner.m_owner.stateMachine.getCurrentState())
+        m_owner.m_parentStates[m_id] = \
+m_owner.m_owner.stateMachine.getCurrentState()->get().getId();
+    else
+        m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
+    m_owner.m_entityCount++;
+    m_builded = true;
 }
 
 void EntityBuilder::buildAsOrphan()
 {
+    m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
+    m_owner.m_entityCount++;
+    m_builded = true;
 }
