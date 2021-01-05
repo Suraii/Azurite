@@ -70,11 +70,11 @@ namespace Azurite {
             for (auto& [id, component]: first)
                 if (
                     ((rest.find(id) != rest.end()) && ...)
-                    /*&& (
+                    && (
                         !(m_owner.stateMachine.getCurrentState())
                         || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == -1
-                    )*/
+                            || (m_parentStates.at(id) == -1)
+                    )
                 )
                     output.push_back(std::tuple<T&, R&...>{component, rest.at(id)...});
             return output;
@@ -89,11 +89,11 @@ namespace Azurite {
             for (auto& [id, component]: first)
                 if (
                     ((rest.find(id) != rest.end()) && ...)
-                    /*&& (
+                    && (
                         !(m_owner.stateMachine.getCurrentState())
                         || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == -1
-                    )*/
+                            || (m_parentStates.at(id) == -1)
+                    )
                 )
                     output.emplace(id, std::tuple<T&, R&...>{component, rest.at(id)...});
             return output;
