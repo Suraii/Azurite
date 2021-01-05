@@ -110,22 +110,28 @@ namespace Azurite {
         }
         //EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
-    };
 
-    class EntityBuilder {
-        ComponentsStorage &m_owner;
-        unsigned m_id;
-        bool m_builded;
-    public:
-        EntityBuilder(ComponentsStorage &owner, unsigned id);
-        ~EntityBuilder();
-        template<typename T>
-        EntityBuilder &withComponent(T component)
-        {
-            m_owner.storeComponent(m_id, component);
-        }
-        void build();
-        void buildAsOrphan();
+    /*
+    ** ENTITY BUILDER SUBCLASS
+    */
+
+    private:
+
+        class EntityBuilder {
+            ComponentsStorage &m_owner;
+            unsigned m_id;
+            bool m_builded;
+        public:
+            EntityBuilder(ComponentsStorage &owner, unsigned id);
+            ~EntityBuilder();
+            template<typename T>
+            EntityBuilder &withComponent(T component)
+            {
+                m_owner.storeComponent(m_id, component);
+            }
+            void build();
+            void buildAsOrphan();
+        };
     };
 };
 

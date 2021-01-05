@@ -17,17 +17,17 @@ ComponentsStorage::~ComponentsStorage() {}
 ** ENTITY BUILDER IMPLEMENTATION
 */
 
-EntityBuilder::EntityBuilder(ComponentsStorage &owner, unsigned id)
+ComponentsStorage::EntityBuilder::EntityBuilder(ComponentsStorage &owner, unsigned id)
 : m_owner(owner), m_id(id), m_builded(false)
 {}
 
-EntityBuilder::~EntityBuilder()
+ComponentsStorage::EntityBuilder::~EntityBuilder()
 {
     if (!m_builded)
         Snitch::warn() << "missing .build() after entity builder" << Snitch::endl;
 }
 
-void EntityBuilder::build()
+void ComponentsStorage::EntityBuilder::build()
 {
     if (m_owner.m_owner.stateMachine.getCurrentState())
         m_owner.m_parentStates[m_id] = \
@@ -39,7 +39,7 @@ m_owner.m_owner.stateMachine.getCurrentState()->get().getId();
     m_builded = true;
 }
 
-void EntityBuilder::buildAsOrphan()
+void ComponentsStorage::EntityBuilder::buildAsOrphan()
 {
     m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
