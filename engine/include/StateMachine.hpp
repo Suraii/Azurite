@@ -7,9 +7,10 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include "Game.hpp"
 
 namespace Azurite {
+
+    class Game;
 
     class AState;
     struct Event;
@@ -57,4 +58,12 @@ namespace Azurite {
     };
 }
 
+#endif
+
+/*
+** DEPENDENCIES
+*/
+
+#ifndef __AZURITE__INNER__GAME
+#include "Game.hpp"
 #endif
