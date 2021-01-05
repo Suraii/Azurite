@@ -14,8 +14,12 @@
 
 namespace Azurite {
 
+    class EntityBuilder;
+
     // ECS Data container class
     class ComponentsStorage {
+        friend EntityBuilder;
+
         Game &m_owner;
         std::unordered_map<std::type_index, std::any> m_components;
         std::map<unsigned, long> m_parentStates;
@@ -108,7 +112,21 @@ namespace Azurite {
         void destroyEntity(unsigned id);
     };
 
-
+    class EntityBuilder {
+        ComponentsStorage &m_owner;
+        unsigned m_id;
+        bool m_builded;
+    public:
+        EntityBuilder(ComponentsStorage &owner, unsigned id);
+        ~EntityBuilder();
+        template<typename T>
+        EntityBuilder &withComponent(T component)
+        {
+            m_owner.storeComponent(m_id, component);
+        }
+        void build();
+        void buildAsOrphan();
+    };
 };
 
 #endif
