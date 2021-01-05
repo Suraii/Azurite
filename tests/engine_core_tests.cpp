@@ -196,6 +196,10 @@ BOOST_AUTO_TEST_CASE(components_storage_joining_storages)
     "Different values in joined storages and joined storages with ids");
 }
 
+struct Misc {
+    int data = 0;
+};
+
 BOOST_AUTO_TEST_CASE(components_storage_getting_components)
 {
     Game game;
@@ -204,6 +208,7 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
     storage.registerComponent<int>();
     storage.registerComponent<char>();
     storage.registerComponent<bool>();
+    storage.registerComponent<Misc>();
 
     storage.storeComponent(0, false);
     storage.storeComponent(0, 'z');
@@ -211,6 +216,7 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
     storage.storeComponent(3, true);
     storage.storeComponent(3, 't');
     storage.storeComponent(3, 33);
+    storage.storeComponent(3, Misc{3});
 
     storage.storeComponent(4, 'q');
 
@@ -227,4 +233,23 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
     "Couldn't find entity 3 in returned components containers");
     BOOST_CHECK_MESSAGE(components_ids.at(3) == components.at(0),
     "Different values in components containers with  and without ids");
+}
+
+BOOST_AUTO_TEST_CASE(components_storage_building_entity)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+    storage.registerComponent<bool>();
+    storage.registerComponent<std::string>();
+
+    storage.buildEntity()
+        .withComponent(1)
+        .withComponent(true)
+        .withComponent(std::string("I am Murloc !"))
+        .build();
+    auto components = storage.getComponents<std::string, int, bool>();
+    BOOST_CHECK_MESSAGE(components.size() == 1,
+    "Couldn't find entity's components in storage");
 }

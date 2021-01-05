@@ -11,7 +11,15 @@ ComponentsStorage::ComponentsStorage(Game &owner) : m_owner(owner)
 
 ComponentsStorage::~ComponentsStorage() {}
 
-//EntityBuilder ComponentsStorage::buildEntity() {}
+ComponentsStorage::EntityBuilder ComponentsStorage::buildEntity()
+{
+    return EntityBuilder(*this, m_entityCount++);
+}
+
+void ComponentsStorage::destroyEntity(unsigned id)
+{
+    m_lifeLines[id] = false;
+}
 
 /*
 ** ENTITY BUILDER IMPLEMENTATION
@@ -35,7 +43,6 @@ m_owner.m_owner.stateMachine.getCurrentState()->get().getId();
     else
         m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
-    m_owner.m_entityCount++;
     m_builded = true;
 }
 
@@ -43,6 +50,5 @@ void ComponentsStorage::EntityBuilder::buildAsOrphan()
 {
     m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
-    m_owner.m_entityCount++;
     m_builded = true;
 }

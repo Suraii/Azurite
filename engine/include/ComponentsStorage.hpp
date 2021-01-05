@@ -14,10 +14,9 @@
 
 namespace Azurite {
 
-    class EntityBuilder;
-
     // ECS Data container class
     class ComponentsStorage {
+        class EntityBuilder;
         friend EntityBuilder;
 
         Game &m_owner;
@@ -108,7 +107,7 @@ namespace Azurite {
         {
             return joinStoragesWithIds(getStorage<T>(), getStorage<R>()...);
         }
-        //EntityBuilder buildEntity();
+        EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
 
     /*
@@ -128,6 +127,7 @@ namespace Azurite {
             EntityBuilder &withComponent(T component)
             {
                 m_owner.storeComponent(m_id, component);
+                return *this;
             }
             void build();
             void buildAsOrphan();
