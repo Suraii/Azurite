@@ -52,9 +52,10 @@ namespace Azurite {
             is_alive
             && ((storages.find(id) != storages.end()) && ...)
             && (
-                !(m_owner.stateMachine.getCurrentState())
-                || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                || (m_parentStates.at(id) == -1)
+                (
+                    m_owner.stateMachine.getCurrentState()
+                    && (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
+                ) || (m_parentStates.at(id) == -1)
             );
         }
 

@@ -9,7 +9,8 @@ using namespace Azurite;
 ComponentsStorage::ComponentsStorage(Game &owner) : m_owner(owner), m_entityCount(0)
 {}
 
-ComponentsStorage::~ComponentsStorage() {}
+ComponentsStorage::~ComponentsStorage()
+{}
 
 unsigned ComponentsStorage::getFreeId()
 {

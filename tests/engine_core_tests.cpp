@@ -245,3 +245,51 @@ BOOST_AUTO_TEST_CASE(components_storage_id_recycling)
     "Builded entity should use the freed id '0', instead it used " << id);
 }
 
+BOOST_AUTO_TEST_CASE(components_storage_parent_states)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+
+    storage.buildEntity()
+        .withComponent(0)
+        .build();
+
+    game.stateMachine.stackState(std::make_unique<DummyState>(DummyState()));
+
+    storage.buildEntity()
+        .withComponent(1)
+        .build();
+    storage.buildEntity()
+        .withComponent(1)
+        .buildAsOrphan();
+
+    game.stateMachine.stackState(std::make_unique<DummyState>(DummyState()));
+
+    storage.buildEntity()
+        .withComponent(1)
+        .build();
+    storage.buildEntity()
+        .withComponent(1)
+        .build();
+
+    BOOST_CHECK_MESSAGE(storage.getComponents<int>().size() == 4,
+    "Wrong numbers of components actives during state " <<
+    game.stateMachine.getCurrentState()->get().getId() <<
+    ", expected " << 4 << " got " << storage.getComponents<int>().size());
+
+    game.stateMachine.leaveCurrentState();
+
+    BOOST_CHECK_MESSAGE(storage.getComponents<int>().size() == 3,
+    "Wrong numbers of components actives during state " <<
+    game.stateMachine.getCurrentState()->get().getId() <<
+    ", expected " << 3 << " got " << storage.getComponents<int>().size());
+
+    game.stateMachine.leaveCurrentState();
+
+    BOOST_CHECK_MESSAGE(storage.getComponents<int>().size() == 2,
+    "Wrong numbers of components actives out of states " <<
+    ", expected " << 2 << " got " << storage.getComponents<int>().size());
+}
+
