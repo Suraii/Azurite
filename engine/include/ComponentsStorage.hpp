@@ -37,7 +37,7 @@ namespace Azurite {
         bool entityIsValid(
             const unsigned id,
             const std::map<unsigned, T>&... storages
-        )
+        ) const
         {
             bool is_alive;
 

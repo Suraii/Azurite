@@ -15,7 +15,7 @@ ComponentsStorage::~ComponentsStorage()
 unsigned ComponentsStorage::getFreeId()
 {
     for (unsigned i = 0; i < m_entityCount; i++)
-        if (!m_lifeLines[i])
+        if (!m_lifeLines.at(i))
             return i;
     return m_entityCount++;
 }
