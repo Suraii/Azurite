@@ -6,7 +6,7 @@ using namespace Azurite;
 ** COMPONENT STORAGE IMPLEMENTATION
 */
 
-ComponentsStorage::ComponentsStorage(Game &owner) : m_owner(owner)
+ComponentsStorage::ComponentsStorage(Game &owner) : m_owner(owner), m_entityCount(0)
 {}
 
 ComponentsStorage::~ComponentsStorage() {}

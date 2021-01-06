@@ -141,66 +141,11 @@ BOOST_AUTO_TEST_CASE(state_machine_get_curent_state)
 ** COMPONENTS STORAGE TESTS
 */
 
-BOOST_AUTO_TEST_CASE(components_storage_registering_and_accessing)
-{
-    Game game;
-    ComponentsStorage cs(game);
-
-    cs.registerComponent<int>();
-    cs.storeComponent(6, 9);
-    std::map<unsigned, int> &ints = cs.getStorage<int>();
-    BOOST_CHECK_MESSAGE(ints.find(6) != ints.end(),
-    "Couldn't find written int storage");
-    BOOST_CHECK_MESSAGE(ints[6] == 9,
-    "Wrong value for written int in storage, expected 9 got " << ints[6]);
-}
-
-BOOST_AUTO_TEST_CASE(components_storage_joining_storages)
-{
-    Game game;
-    ComponentsStorage cs(game);
-
-    cs.registerComponent<int>();
-    cs.registerComponent<char>();
-    cs.registerComponent<bool>();
-
-    cs.storeComponent(0, false);
-    cs.storeComponent(0, 'z');
-
-    cs.storeComponent(3, true);
-    cs.storeComponent(3, 't');
-    cs.storeComponent(3, 33);
-
-    cs.storeComponent(4, 'q');
-
-    std::map<unsigned, std::tuple<int &, char &, bool &>> joined_storages_ids = \
-    cs.joinStoragesWithIds(
-        cs.getStorage<int>(),
-        cs.getStorage<char>(),
-        cs.getStorage<bool>()
-    );
-    std::vector<std::tuple<int &, char &, bool &>> joined_storages = \
-    cs.joinStorages(
-        cs.getStorage<int>(),
-        cs.getStorage<char>(),
-        cs.getStorage<bool>()
-    );
-
-    BOOST_CHECK_MESSAGE(joined_storages.size() == joined_storages_ids.size()
-    && joined_storages_ids.size() == 1,
-    "Wrong size for joined storages, expected 1 for both, got " << joined_storages.size()\
-    << " and " << joined_storages_ids.size() << " with ids");
-    BOOST_CHECK_MESSAGE(joined_storages_ids.find(3) != joined_storages_ids.end(),
-    "Couldn't find entity 3 in joined storages");
-    BOOST_CHECK_MESSAGE(joined_storages_ids.at(3) == joined_storages.at(0),
-    "Different values in joined storages and joined storages with ids");
-}
-
 struct Misc {
     int data = 0;
 };
 
-BOOST_AUTO_TEST_CASE(components_storage_getting_components)
+BOOST_AUTO_TEST_CASE(components_storage_building_entities_and_getting_components)
 {
     Game game;
     ComponentsStorage storage(game);
@@ -210,15 +155,21 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
     storage.registerComponent<bool>();
     storage.registerComponent<Misc>();
 
-    storage.storeComponent(0, false);
-    storage.storeComponent(0, 'z');
+    storage.buildEntity()
+        .withComponent(false)
+        .withComponent('z')
+        .build();
 
-    storage.storeComponent(3, true);
-    storage.storeComponent(3, 't');
-    storage.storeComponent(3, 33);
-    storage.storeComponent(3, Misc{3});
+    storage.buildEntity()
+        .withComponent(true)
+        .withComponent('t')
+        .withComponent(33)
+        .withComponent(Misc{3})
+        .build();
 
-    storage.storeComponent(4, 'q');
+    storage.buildEntity()
+        .withComponent('q')
+        .build();
 
     std::map<unsigned, std::tuple<int &, char &, bool &>> components_ids \
     = storage.getComponentsWithIds<int, char, bool>();
@@ -229,27 +180,8 @@ BOOST_AUTO_TEST_CASE(components_storage_getting_components)
     && components_ids.size() == 1,
     "Wrong size for returned components containers, expected 1 for both, got " << components.size()\
     << " and " << components_ids.size() << " with ids");
-    BOOST_CHECK_MESSAGE(components_ids.find(3) != components_ids.end(),
-    "Couldn't find entity 3 in returned components containers");
-    BOOST_CHECK_MESSAGE(components_ids.at(3) == components.at(0),
-    "Different values in components containers with  and without ids");
-}
-
-BOOST_AUTO_TEST_CASE(components_storage_building_entity)
-{
-    Game game;
-    ComponentsStorage storage(game);
-
-    storage.registerComponent<int>();
-    storage.registerComponent<bool>();
-    storage.registerComponent<std::string>();
-
-    storage.buildEntity()
-        .withComponent(1)
-        .withComponent(true)
-        .withComponent(std::string("I am Murloc !"))
-        .build();
-    auto components = storage.getComponents<std::string, int, bool>();
-    BOOST_CHECK_MESSAGE(components.size() == 1,
-    "Couldn't find entity's components in storage");
+    BOOST_CHECK_MESSAGE(components_ids.find(1) != components_ids.end(),
+    "Couldn't find entity 1 in returned components containers");
+    BOOST_CHECK_MESSAGE(components_ids.at(1) == components.at(0),
+    "Different values in components containers with and without ids");
 }

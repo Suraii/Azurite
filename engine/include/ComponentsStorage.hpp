@@ -29,6 +29,32 @@ namespace Azurite {
         ComponentsStorage(Game &owner);
         ~ComponentsStorage();
 
+    private : // Tools
+        template<typename... T>
+        bool entityIsValid(
+            const unsigned id,
+            const std::map<unsigned, T>&... storages
+        )
+        {
+            bool is_alive;
+
+            try {
+                is_alive = m_lifeLines.at(id);
+            } catch(std::out_of_range &e) {
+                Snitch::warn() << "Trying to read component that isn't part of an entity, with id " << id << Snitch::endl;
+                is_alive = false;
+            }
+
+            return
+            is_alive
+            && ((storages.find(id) != storages.end()) && ...)
+            && (
+                !(m_owner.stateMachine.getCurrentState())
+                || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
+                || (m_parentStates.at(id) == -1)
+            );
+        }
+
     // Inner control methods
         template<typename T>
         void storeComponent(unsigned id, T components)
@@ -37,6 +63,7 @@ namespace Azurite {
 
             storage[id] = components;
         }
+
         template<typename T>
         std::map<unsigned, T> &getStorage()
         {
@@ -48,10 +75,43 @@ namespace Azurite {
             << "', please register it before via ComponentsStorage::registerComponent()" << Snitch::endl;
             throw(std::out_of_range("Element not found in map"));
         }
+
+        template<typename T, typename... R>
+        std::vector<std::tuple<T&, R&...>> joinStorages
+        (
+            std::map<unsigned, T>& first,
+            std::map<unsigned, R>&... rest
+        )
+        {
+            std::vector<std::tuple<T&, R&...>> output;
+
+            for (auto& [id, component]: first)
+                if (entityIsValid(id, rest...))
+                    output.push_back(std::tuple<T&, R&...>{component, rest.at(id)...});
+            return output;
+        }
+
+        template<typename T, typename... R>
+        std::map<unsigned, std::tuple<T&, R&...>> joinStoragesWithIds
+        (
+            std::map<unsigned, T>& first,
+            std::map<unsigned int, R>&... rest
+        )
+        {
+            std::map<unsigned, std::tuple<T&, R&...>> output;
+
+            for (auto& [id, component]: first)
+                if (entityIsValid(id, rest...))
+                    output.emplace(id, std::tuple<T&, R&...>{component, rest.at(id)...});
+            return output;
+        }
+
         //template<typename T>
         //void clearZombies<T>(std::map<unsigned, T> storage);
 
     // Control methods
+    public:
+
         template<typename T>
         void registerComponent()
         {
@@ -61,52 +121,17 @@ namespace Azurite {
         }
 
         template<typename T, typename... R>
-        std::vector<std::tuple<T&, R&...>> joinStorages
-        (std::map<unsigned, T>& first, std::map<unsigned int, R>&... rest)
-        {
-            std::vector<std::tuple<T&, R&...>> output;
-
-            for (auto& [id, component]: first)
-                if (
-                    ((rest.find(id) != rest.end()) && ...)
-                    && (
-                        !(m_owner.stateMachine.getCurrentState())
-                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                            || (m_parentStates.at(id) == -1)
-                    )
-                )
-                    output.push_back(std::tuple<T&, R&...>{component, rest.at(id)...});
-            return output;
-        }
-
-        template<typename T, typename... R>
-        std::map<unsigned, std::tuple<T&, R&...>> joinStoragesWithIds
-        (std::map<unsigned, T>& first, std::map<unsigned int, R>&... rest)
-        {
-            std::map<unsigned, std::tuple<T&, R&...>> output;
-
-            for (auto& [id, component]: first)
-                if (
-                    ((rest.find(id) != rest.end()) && ...)
-                    && (
-                        !(m_owner.stateMachine.getCurrentState())
-                        || (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                            || (m_parentStates.at(id) == -1)
-                    )
-                )
-                    output.emplace(id, std::tuple<T&, R&...>{component, rest.at(id)...});
-            return output;
-        }
-        template<typename T, typename... R>
         std::vector<std::tuple<T&, R&...>> getComponents()
         {
             return joinStorages(getStorage<T>(), getStorage<R>()...);
         }
+
         template<typename T, typename... R>
         std::map<unsigned, std::tuple<T&, R&...>> getComponentsWithIds()
         {
             return joinStoragesWithIds(getStorage<T>(), getStorage<R>()...);
         }
+
         EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
 
