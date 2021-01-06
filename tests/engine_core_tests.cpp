@@ -244,3 +244,4 @@ BOOST_AUTO_TEST_CASE(components_storage_id_recycling)
     BOOST_CHECK_MESSAGE(id == 0,
     "Builded entity should use the freed id '0', instead it used " << id);
 }
+

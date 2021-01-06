@@ -70,9 +70,13 @@ namespace Azurite {
         template<typename T>
         std::map<unsigned, T> &getStorage()
         {
-            for (auto &[id, storage] : m_components)
-                if (std::type_index(typeid(T)) == id)
-                    return std::any_cast<std::map<unsigned, T> &>(storage);
+            for (auto &[id, storage] : m_components) {
+                if (std::type_index(typeid(T)) == id) {
+                    std::map<unsigned, T> &output = std::any_cast<std::map<unsigned, T> &>(storage);
+                    clearZombies(output);
+                    return output;
+                }
+            }
             Snitch::err() << "Call to ComponentsStorage::getStorage() on unregistered type '"
             << typeid(T).name()
             << "', please register it before via ComponentsStorage::registerComponent()" << Snitch::endl;
@@ -109,8 +113,13 @@ namespace Azurite {
             return output;
         }
 
-        //template<typename T>
-        //void clearZombies<T>(std::map<unsigned, T> storage);
+        template<typename T>
+        void clearZombies(std::map<unsigned, T> &storage)
+        {
+            for (const auto &[id, is_alive] : m_lifeLines)
+                if (!is_alive)
+                    storage.erase(id);
+        }
 
     // Control methods
     public:
