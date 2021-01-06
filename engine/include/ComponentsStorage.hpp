@@ -30,6 +30,9 @@ namespace Azurite {
         ~ComponentsStorage();
 
     private : // Tools
+
+        unsigned getFreeId();
+
         template<typename... T>
         bool entityIsValid(
             const unsigned id,

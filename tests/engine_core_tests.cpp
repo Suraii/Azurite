@@ -223,3 +223,24 @@ BOOST_AUTO_TEST_CASE(components_storage_destroying_entities)
     BOOST_CHECK_MESSAGE(components.size() == 1,
     "Wrong size for returned components, expected 1, got " << components.size());
 }
+
+BOOST_AUTO_TEST_CASE(components_storage_id_recycling)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+
+    storage.buildEntity()
+        .withComponent(0)
+        .build();
+
+    storage.destroyEntity(0);
+
+    unsigned id = storage.buildEntity()
+        .withComponent(1)
+        .build();
+
+    BOOST_CHECK_MESSAGE(id == 0,
+    "Builded entity should use the freed id '0', instead it used " << id);
+}

@@ -11,9 +11,17 @@ ComponentsStorage::ComponentsStorage(Game &owner) : m_owner(owner), m_entityCoun
 
 ComponentsStorage::~ComponentsStorage() {}
 
+unsigned ComponentsStorage::getFreeId()
+{
+    for (unsigned i = 0; i < m_entityCount; i++)
+        if (!m_lifeLines[i])
+            return i;
+    return m_entityCount++;
+}
+
 ComponentsStorage::EntityBuilder ComponentsStorage::buildEntity()
 {
-    return EntityBuilder(*this, m_entityCount++);
+    return EntityBuilder(*this, getFreeId());
 }
 
 void ComponentsStorage::destroyEntity(unsigned id)
