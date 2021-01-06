@@ -35,7 +35,7 @@ ComponentsStorage::EntityBuilder::~EntityBuilder()
         Snitch::warn() << "missing .build() after entity builder" << Snitch::endl;
 }
 
-void ComponentsStorage::EntityBuilder::build()
+unsigned ComponentsStorage::EntityBuilder::build()
 {
     if (m_owner.m_owner.stateMachine.getCurrentState())
         m_owner.m_parentStates[m_id] = \
@@ -44,11 +44,15 @@ m_owner.m_owner.stateMachine.getCurrentState()->get().getId();
         m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
     m_builded = true;
+
+    return m_id;
 }
 
-void ComponentsStorage::EntityBuilder::buildAsOrphan()
+unsigned ComponentsStorage::EntityBuilder::buildAsOrphan()
 {
     m_owner.m_parentStates[m_id] = -1;
     m_owner.m_lifeLines[m_id] = true;
     m_builded = true;
+
+    return m_id;
 }

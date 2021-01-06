@@ -154,8 +154,8 @@ namespace Azurite {
                 m_owner.storeComponent(m_id, component);
                 return *this;
             }
-            void build();
-            void buildAsOrphan();
+            unsigned build();
+            unsigned buildAsOrphan();
         };
     };
 };

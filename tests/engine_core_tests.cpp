@@ -185,3 +185,36 @@ BOOST_AUTO_TEST_CASE(components_storage_building_entities_and_getting_components
     BOOST_CHECK_MESSAGE(components_ids.at(1) == components.at(0),
     "Different values in components containers with and without ids");
 }
+
+BOOST_AUTO_TEST_CASE(components_storage_destroying_entities)
+{
+    Game game;
+    ComponentsStorage storage(game);
+
+    storage.registerComponent<int>();
+    storage.registerComponent<bool>();
+
+    storage.buildEntity()
+        .withComponent(44)
+        .withComponent(false)
+        .build();
+
+    storage.buildEntity()
+        .withComponent(22)
+        .withComponent(true)
+        .build();
+
+    storage.buildEntity()
+        .withComponent(55)
+        .withComponent(true)
+        .build();
+
+    storage.destroyEntity(0);
+    storage.destroyEntity(2);
+
+    std::vector<std::tuple<int &, bool &>> components \
+    = storage.getComponents<int, bool>();
+
+    BOOST_CHECK_MESSAGE(components.size() == 1,
+    "Wrong size for returned components, expected 1, got " << components.size());
+}
