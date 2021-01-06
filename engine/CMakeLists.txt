@@ -2,6 +2,7 @@
 add_library(azurite_engine SHARED
 src/Game.cpp
 src/StateMachine.cpp
+src/ComponentsStorage.cpp
 src/Snitch.cpp
 src/lib.cpp
 )
