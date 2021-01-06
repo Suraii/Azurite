@@ -149,27 +149,32 @@ BOOST_AUTO_TEST_CASE(components_storage_building_entities_and_getting_components
 {
     Game game;
     ComponentsStorage storage(game);
+    unsigned ids[3];
 
     storage.registerComponent<int>();
     storage.registerComponent<char>();
     storage.registerComponent<bool>();
     storage.registerComponent<Misc>();
 
-    storage.buildEntity()
+    ids[0] = storage.buildEntity()
         .withComponent(false)
         .withComponent('z')
         .build();
 
-    storage.buildEntity()
+    ids[1] = storage.buildEntity()
         .withComponent(true)
         .withComponent('t')
         .withComponent(33)
         .withComponent(Misc{3})
         .build();
 
-    storage.buildEntity()
+    ids[2] = storage.buildEntity()
         .withComponent('q')
         .build();
+
+    for (unsigned i = 0; i < 3; i++)
+        BOOST_CHECK_MESSAGE(ids[i] == i,
+        "Wrong id returned by build(), expected " << i << " got " << ids[i]);
 
     std::map<unsigned, std::tuple<int &, char &, bool &>> components_ids \
     = storage.getComponentsWithIds<int, char, bool>();
