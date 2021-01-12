@@ -9,10 +9,11 @@
 #include <tuple>
 #include <exception>
 
-#include "Game.hpp"
 #include "Snitch.hpp"
 
 namespace Azurite {
+
+    class Game;
 
     // ECS Data container class
     class ComponentsStorage {
@@ -34,55 +35,17 @@ namespace Azurite {
         unsigned getFreeId();
 
         template<typename... T>
-        bool entityIsValid(
-            const unsigned id,
-            const std::map<unsigned, T>&... storages
-        ) const
-        {
-            bool is_alive;
-
-            try {
-                is_alive = m_lifeLines.at(id);
-            } catch(std::out_of_range &e) {
-                Snitch::warn() << "Trying to read component that isn't part of an entity, with id " << id << Snitch::endl;
-                is_alive = false;
-            }
-
-            return
-            is_alive
-            && ((storages.find(id) != storages.end()) && ...)
-            && (
-                (
-                    m_owner.stateMachine.getCurrentState()
-                    && (*m_owner.stateMachine.getCurrentState()).get().getId() == m_parentStates.at(id)
-                ) || (m_parentStates.at(id) == -1)
-            );
-        }
+        bool entityIsValid(const unsigned id, const std::map<unsigned, T>&... storages) const;
 
     // Inner control methods
         template<typename T>
-        void storeComponent(unsigned id, T components)
-        {
-            std::map<unsigned, T> &storage = getStorage<T>();
-
-            storage[id] = components;
-        }
+        void storeComponent(unsigned id, T components);
 
         template<typename T>
-        std::map<unsigned, T> &getStorage()
-        {
-            for (auto &[id, storage] : m_components) {
-                if (std::type_index(typeid(T)) == id) {
-                    std::map<unsigned, T> &output = std::any_cast<std::map<unsigned, T> &>(storage);
-                    clearZombies(output);
-                    return output;
-                }
-            }
-            Snitch::err() << "Call to ComponentsStorage::getStorage() on unregistered type '"
-            << typeid(T).name()
-            << "', please register it before via ComponentsStorage::registerComponent()" << Snitch::endl;
-            throw(std::out_of_range("Element not found in map"));
-        }
+        std::map<unsigned, T> &getStorage();
+
+        template<typename T>
+        void clearZombies(std::map<unsigned, T> &storage);
 
         template<typename T, typename... R>
         std::vector<std::tuple<T&, R&...>> joinStorages
@@ -114,39 +77,21 @@ namespace Azurite {
             return output;
         }
 
-        template<typename T>
-        void clearZombies(std::map<unsigned, T> &storage)
-        {
-            for (const auto &[id, is_alive] : m_lifeLines)
-                if (!is_alive)
-                    storage.erase(id);
-        }
-
     // Control methods
     public:
 
         template<typename T>
-        void registerComponent()
-        {
-            std::map<unsigned, T> new_storage;
-
-            m_components[std::type_index(typeid(T))] = std::move(new_storage);
-        }
+        void registerComponent();
 
         template<typename T, typename... R>
-        std::vector<std::tuple<T&, R&...>> getComponents()
-        {
-            return joinStorages(getStorage<T>(), getStorage<R>()...);
-        }
+        std::vector<std::tuple<T&, R&...>> getComponents();
 
         template<typename T, typename... R>
-        std::map<unsigned, std::tuple<T&, R&...>> getComponentsWithIds()
-        {
-            return joinStoragesWithIds(getStorage<T>(), getStorage<R>()...);
-        }
+        std::map<unsigned, std::tuple<T&, R&...>> getComponentsWithIds();
 
         EntityBuilder buildEntity();
         void destroyEntity(unsigned id);
+
 
     /*
     ** ENTITY BUILDER SUBCLASS
@@ -171,6 +116,13 @@ namespace Azurite {
             unsigned buildAsOrphan();
         };
     };
+
 };
 
 #endif
+
+#ifndef __AZURITE__INNER__GAME
+#include "Game.hpp"
+#endif
+
+#include "ComponentsStorage.impl.hpp"

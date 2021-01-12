@@ -2,7 +2,7 @@
 
 using namespace Azurite;
 
-Game::Game() : stateMachine(*this)
+Game::Game() : stateMachine(*this), componentsStorage(*this)
 {}
 
 Game::~Game()
