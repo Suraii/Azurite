@@ -5,6 +5,7 @@
 #include "Game.hpp"
 #include "StateMachine.hpp"
 #include "ComponentsStorage.hpp"
+#include "SystemsManager.hpp"
 
 using namespace Azurite;
 
@@ -293,3 +294,12 @@ BOOST_AUTO_TEST_CASE(components_storage_parent_states)
     ", expected " << 2 << " got " << storage.getComponents<int>().size());
 }
 
+/*
+** SYSTEMS MANAGER TESTS
+*/
+
+BOOST_AUTO_TEST_CASE(systems_manager_basic)
+{
+    Game game;
+    SystemsManager system(game);
+}
