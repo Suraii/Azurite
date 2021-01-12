@@ -4,6 +4,7 @@
 #include <iostream>
 #include <functional>
 #include <any>
+#include <vector>
 
 template<typename Ret, typename Arg, typename... Rest>
 Arg first_argument_helper(Ret(*) (Arg, Rest...));
@@ -23,23 +24,6 @@ using first_argument = decltype(first_argument_helper(std::declval<T>()));
 template <typename T>
 T getValue();
 
-template<>
-int getValue<int>() {
-    return 5;
-}
-
-template<>
-char getValue<char>() {
-    return 'f';
-}
-
-#include <string>
-
-template<>
-std::string getValue<std::string>() {
-    return "five";
-}
-
 namespace Azurite {
 
     class Game;
@@ -47,10 +31,10 @@ namespace Azurite {
     // Global Logic Handling class
     class SystemsManager {
         class System {
-        public:
             SystemsManager &m_owner;
             std::any m_function;
             std::function<void(Game &, std::any &)> m_summoner;
+        public:
         // System Methods
             template<typename T>
             System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
@@ -64,36 +48,17 @@ namespace Azurite {
         friend System;
 
         Game &m_owner;
+        std::vector<System> m_systems;
     public:
         SystemsManager(Game &owner);
         ~SystemsManager();
         template<typename T>
         void createSystem(T function)
         {
-
+            m_systems.emplace_back(*this, function);
         };
         void runSystems();
     };
-
-    /*class System {
-        std::any m_function;
-        std::function<void(Game &, std::any)> m_summoner;
-        Game &m_game;
-    public:
-        template<typename T>
-        System(Game &game, T lambda) : m_game(game), m_function(lambda)
-        {
-            m_summoner = [](Game &, std::any function) {
-                std::cout << "hoho\n";
-                std::any_cast<T>(function)();
-            };
-        }
-
-        void run()
-        {
-            m_summoner(m_game, m_function);
-        }
-    };*/
 };
 
 #endif
