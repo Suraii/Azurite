@@ -44,13 +44,12 @@ namespace Azurite {
             template<typename T>
             System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
             {
-                m_summoner = [](Game &game, std::any &function) {
+                m_summoner = [](Game &game, std::any function) {
                     auto components = game.componentsStorage.getComponents<first_argument<T>>();
-                    T &casted_function = std::any_cast<T>(function);
+                    T casted_function = std::any_cast<T>(function);
 
                     for (auto &component : components)
-                        casted_function(component);
-
+                        casted_function(std::get<0>(component));
                 };
             }
             void run();

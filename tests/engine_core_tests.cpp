@@ -298,8 +298,28 @@ BOOST_AUTO_TEST_CASE(components_storage_parent_states)
 ** SYSTEMS MANAGER TESTS
 */
 
-BOOST_AUTO_TEST_CASE(systems_manager_basic)
+struct WitnessBool {
+    bool value = false;
+};
+
+BOOST_AUTO_TEST_CASE(systems_manager_unicomponent_system)
 {
     Game game;
     SystemsManager system(game);
+
+    game.componentsStorage.registerComponent<WitnessBool>();
+    for (int i = 0; i < 10; i++)
+        game.componentsStorage.buildEntity().withComponent(WitnessBool()).build();
+    system.createSystem([](WitnessBool &wb){
+        wb.value = true;
+    });
+    system.runSystems();
+    auto components = game.componentsStorage.getComponents<WitnessBool>();
+
+    BOOST_CHECK_MESSAGE(components.size() == 10, \
+    "Wrong size for components vector, expected 10, got " << components.size());
+
+    for (auto &component : components)
+        BOOST_CHECK_MESSAGE(std::get<0>(component).value,
+    "Witness's value wasn't properly set to true");
 }
