@@ -50,14 +50,13 @@ namespace Azurite {
         public:
             SystemsManager &m_owner;
             std::any m_function;
-            std::function<void(System &)> m_summoner;
+            std::function<void(Game &, std::any &)> m_summoner;
         // System Methods
             template<typename T>
             System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
             {
-                m_summoner = [](System &self) {
-                    Game &game = self.m_owner.m_owner;
-                    std::any_cast<T>(self.m_function)();
+                m_summoner = [](Game &game, std::any &function) {
+                    std::any_cast<T>(function)();
                 };
             }
             void run();
