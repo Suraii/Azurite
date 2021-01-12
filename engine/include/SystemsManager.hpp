@@ -1,3 +1,11 @@
+/*
+** DEPENDENCIES
+*/
+
+#ifndef __AZURITE__INNER__GAME
+#include "Game.hpp"
+#endif
+
 #ifndef __AZURITE__INNER__SYSTEMS_MANAGER
 #define __AZURITE__INNER__SYSTEMS_MANAGER
 
@@ -21,9 +29,6 @@ decltype(first_argument_helper(&F::operator())) first_argument_helper(F);
 template <typename T>
 using first_argument = decltype(first_argument_helper(std::declval<T>()));
 
-template <typename T>
-T getValue();
-
 namespace Azurite {
 
     class Game;
@@ -40,7 +45,12 @@ namespace Azurite {
             System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
             {
                 m_summoner = [](Game &game, std::any &function) {
-                    std::any_cast<T>(function)();
+                    auto components = game.componentsStorage.getComponents<first_argument<T>>();
+                    T &casted_function = std::any_cast<T>(function);
+
+                    for (auto &component : components)
+                        casted_function(component);
+
                 };
             }
             void run();
@@ -61,12 +71,4 @@ namespace Azurite {
     };
 };
 
-#endif
-
-/*
-** DEPENDENCIES
-*/
-
-#ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
 #endif
