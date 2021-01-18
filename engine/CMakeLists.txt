@@ -12,3 +12,6 @@ src/lib.cpp
 target_include_directories(azurite_engine PUBLIC
 ${PROJECT_SOURCE_DIR}/engine/include
 )
+
+# Linking Boost libs to the engine
+#target_link_libraries(azurite_engine PUBLIC ${CONAN_LIBS})

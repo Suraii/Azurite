@@ -70,11 +70,11 @@ void ComponentsStorage::registerComponent()
 template<typename T, typename... R>
 std::vector<std::tuple<T&, R&...>> ComponentsStorage::getComponents()
 {
-    return joinStorages(getStorage<std::remove_reference_t<T>>(), getStorage<R>()...);
+    return joinStorages(getStorage<std::remove_reference_t<T>>(), getStorage<std::remove_reference_t<R>>()...);
 }
 
 template<typename T, typename... R>
 std::map<unsigned, std::tuple<T&, R&...>> ComponentsStorage::getComponentsWithIds()
 {
-    return joinStoragesWithIds(getStorage<std::remove_reference_t<T>>(), getStorage<R>()...);
+    return joinStoragesWithIds(getStorage<std::remove_reference_t<T>>(), getStorage<std::remove_reference_t<R>>()...);
 }
