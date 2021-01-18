@@ -13,23 +13,42 @@
 #include <functional>
 #include <any>
 #include <vector>
-
-template<typename Ret, typename Arg, typename... Rest>
-Arg first_argument_helper(Ret(*) (Arg, Rest...));
-
-template<typename Ret, typename F, typename Arg, typename... Rest>
-Arg first_argument_helper(Ret(F::*) (Arg, Rest...));
-
-template<typename Ret, typename F, typename Arg, typename... Rest>
-Arg first_argument_helper(Ret(F::*) (Arg, Rest...) const);
-
-template <typename F>
-decltype(first_argument_helper(&F::operator())) first_argument_helper(F);
-
-template <typename T>
-using first_argument = decltype(first_argument_helper(std::declval<T>()));
+#include <tuple>
+#include <type_traits>
+#include <exception>
 
 namespace Azurite {
+
+    template<typename T> // Root template
+    struct ComponentsSeeker : ComponentsSeeker<decltype(&T::operator())> {};
+
+    template<class F, class... Args> // Function specification
+    struct ComponentsSeeker<F(Args...)> {
+        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
+            return game.componentsStorage.getComponents<Args...>();
+        }
+    };
+
+    template<class F, class... Args> // Function pointer specification
+    struct ComponentsSeeker<F (*)(Args...)> {
+        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
+            return game.componentsStorage.getComponents<Args...>();
+        }
+    };
+
+    template<class F, class... Args> // std::function specification
+    struct ComponentsSeeker<std::function<F(Args...)>> {
+        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
+            return game.componentsStorage.getComponents<Args...>();
+        }
+    };
+
+    template<class F, class R, class... Args> // Lambda specification
+    struct ComponentsSeeker<R (F::*)(Args...) const> {
+        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
+            return game.componentsStorage.getComponents<Args...>();
+        }
+    };
 
     class Game;
 
@@ -41,17 +60,32 @@ namespace Azurite {
             std::function<void(Game &, std::any &)> m_summoner;
         public:
         // System Methods
-            template<typename T>
+            template<typename T> // System Ctor
             System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
             {
-                m_summoner = [](Game &game, std::any &function) {
-                    auto components = game.componentsStorage.getComponents<first_argument<T>>();
-                    T &casted_function = std::any_cast<T>(function);
+                m_summoner = [](Game &game, std::any function) {
+                    T casted_function = std::any_cast<T>(function);
+                    ComponentsSeeker<T> seeker;
+                    auto components = seeker.seekComponents(game);
 
-                    for (auto &component : components)
-                        casted_function(component);
+                    for (auto &pack : components)
+                        std::apply(casted_function, pack);
+                };
+
+            }
+
+            template <> // Core System Ctor
+            System(SystemsManager &owner, std::function<void(Game &)> function)
+            : m_owner(owner), m_function(function)
+            {
+                m_summoner = [](Game &game, std::any function) {
+                    std::function<void(Game &)> casted_function = \
+                    std::any_cast<std::function<void(Game &)>>(function);
+
+                    casted_function(game);
                 };
             }
+
             void run();
         };
         friend System;
@@ -66,6 +100,7 @@ namespace Azurite {
         {
             m_systems.emplace_back(*this, function);
         };
+        void createCoreSystem(std::function<void(Game &)> function);
         void runSystems();
     };
 };

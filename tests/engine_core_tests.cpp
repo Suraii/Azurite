@@ -5,6 +5,7 @@
 #include "Game.hpp"
 #include "StateMachine.hpp"
 #include "ComponentsStorage.hpp"
+#include "SystemsManager.hpp"
 
 using namespace Azurite;
 
@@ -293,3 +294,64 @@ BOOST_AUTO_TEST_CASE(components_storage_parent_states)
     ", expected " << 2 << " got " << storage.getComponents<int>().size());
 }
 
+/*
+** SYSTEMS MANAGER TESTS
+*/
+
+struct WitnessBool {
+    bool value = false;
+};
+
+void change_bools(bool &b) { b = true; }
+
+BOOST_AUTO_TEST_CASE(systems_manager_creating_systems_from_various_types)
+{
+    Game game;
+    SystemsManager system(game);
+    std::function<void(bool &b)> my_function = [](bool &b){ b = true; };
+
+    game.componentsStorage.registerComponent<bool>();
+
+    system.createSystem([](bool &b) { b = true; });
+    system.createSystem(&change_bools);
+    system.createSystem(my_function);
+}
+
+BOOST_AUTO_TEST_CASE(systems_manager_basic_system)
+{
+    Game game;
+    SystemsManager system(game);
+
+    game.componentsStorage.registerComponent<WitnessBool>();
+    game.componentsStorage.registerComponent<int>();
+    for (int i = 0; i < 10; i++)
+        game.componentsStorage.buildEntity()
+        .withComponent(WitnessBool()).withComponent(0).build();
+    system.createSystem([](WitnessBool &wb, int &i) {
+        wb.value = true;
+        i++;
+    });
+    system.runSystems();
+    auto components = game.componentsStorage.getComponents<WitnessBool, int>();
+
+    BOOST_CHECK_MESSAGE(components.size() == 10, \
+    "Wrong size for components vector, expected 10, got " << components.size());
+
+    for (auto &component : components)
+        BOOST_REQUIRE_MESSAGE(std::get<0>(component).value && std::get<1>(component),
+    "Witness's value wasn't properly set to true or int wasn't properly incremented'");
+}
+
+BOOST_AUTO_TEST_CASE(systems_manager_core_system)
+{
+    Game game;
+    SystemsManager system(game);
+
+    game.componentsStorage.registerComponent<bool>();
+    system.createCoreSystem([](Game &game){
+        game.componentsStorage.buildEntity().withComponent(true).build();
+    });
+    system.runSystems();
+    BOOST_CHECK_MESSAGE(game.componentsStorage.getComponents<bool>().size() == 1,
+    "Component was not added in storage during core system's run");
+}

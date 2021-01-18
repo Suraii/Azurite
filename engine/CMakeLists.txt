@@ -3,6 +3,7 @@ add_library(azurite_engine SHARED
 src/Game.cpp
 src/StateMachine.cpp
 src/ComponentsStorage.cpp
+src/SystemsManager.cpp
 src/Snitch.cpp
 src/lib.cpp
 )
@@ -11,3 +12,6 @@ src/lib.cpp
 target_include_directories(azurite_engine PUBLIC
 ${PROJECT_SOURCE_DIR}/engine/include
 )
+
+# Linking Boost libs to the engine
+#target_link_libraries(azurite_engine PUBLIC ${CONAN_LIBS})
