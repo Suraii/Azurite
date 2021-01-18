@@ -22,6 +22,11 @@ void SystemsManager::runSystems()
 ** SYSTEM IMPLEMENTATION
 */
 
+void SystemsManager::createCoreSystem(std::function<void(Game &)> function)
+{
+    m_systems.emplace_back(*this, function);
+}
+
 void SystemsManager::System::run()
 {
     m_summoner(m_owner.m_owner, m_function);

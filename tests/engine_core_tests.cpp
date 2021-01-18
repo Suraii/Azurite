@@ -341,3 +341,17 @@ BOOST_AUTO_TEST_CASE(systems_manager_basic_system)
         BOOST_REQUIRE_MESSAGE(std::get<0>(component).value && std::get<1>(component),
     "Witness's value wasn't properly set to true or int wasn't properly incremented'");
 }
+
+BOOST_AUTO_TEST_CASE(systems_manager_core_system)
+{
+    Game game;
+    SystemsManager system(game);
+
+    game.componentsStorage.registerComponent<bool>();
+    system.createCoreSystem([](Game &game){
+        game.componentsStorage.buildEntity().withComponent(true).build();
+    });
+    system.runSystems();
+    BOOST_CHECK_MESSAGE(game.componentsStorage.getComponents<bool>().size() == 1,
+    "Component was not added in storage during core system's run");
+}
