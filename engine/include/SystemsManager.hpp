@@ -1,11 +1,3 @@
-/*
-** DEPENDENCIES
-*/
-
-#ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
-#endif
-
 #ifndef __AZURITE__INNER__SYSTEMS_MANAGER
 #define __AZURITE__INNER__SYSTEMS_MANAGER
 
@@ -19,37 +11,6 @@
 
 namespace Azurite {
 
-    template<typename T> // Root template
-    struct ComponentsSeeker : ComponentsSeeker<decltype(&T::operator())> {};
-
-    template<class F, class... Args> // Function specification
-    struct ComponentsSeeker<F(Args...)> {
-        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
-            return game.componentsStorage.getComponents<Args...>();
-        }
-    };
-
-    template<class F, class... Args> // Function pointer specification
-    struct ComponentsSeeker<F (*)(Args...)> {
-        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
-            return game.componentsStorage.getComponents<Args...>();
-        }
-    };
-
-    template<class F, class... Args> // std::function specification
-    struct ComponentsSeeker<std::function<F(Args...)>> {
-        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
-            return game.componentsStorage.getComponents<Args...>();
-        }
-    };
-
-    template<class F, class R, class... Args> // Lambda specification
-    struct ComponentsSeeker<R (F::*)(Args...) const> {
-        std::vector<std::tuple<Args...>> seekComponents(Game &game) {
-            return game.componentsStorage.getComponents<Args...>();
-        }
-    };
-
     class Game;
 
     // Global Logic Handling class
@@ -61,31 +22,9 @@ namespace Azurite {
         public:
         // System Methods
             template<typename T> // System Ctor
-            System(SystemsManager &owner, T function) : m_owner(owner), m_function(function)
-            {
-                m_summoner = [](Game &game, std::any function) {
-                    T casted_function = std::any_cast<T>(function);
-                    ComponentsSeeker<T> seeker;
-                    auto components = seeker.seekComponents(game);
-
-                    for (auto &pack : components)
-                        std::apply(casted_function, pack);
-                };
-
-            }
-
-            template <> // Core System Ctor
-            System(SystemsManager &owner, std::function<void(Game &)> function)
-            : m_owner(owner), m_function(function)
-            {
-                m_summoner = [](Game &game, std::any function) {
-                    std::function<void(Game &)> casted_function = \
-                    std::any_cast<std::function<void(Game &)>>(function);
-
-                    casted_function(game);
-                };
-            }
-
+            System(SystemsManager &owner, T function);
+            // Core System Ctor
+            System(SystemsManager &owner, std::function<void(Game &)> function);
             void run();
         };
         friend System;
@@ -99,10 +38,21 @@ namespace Azurite {
         void createSystem(T function)
         {
             m_systems.emplace_back(*this, function);
-        };
+        }
         void createCoreSystem(std::function<void(Game &)> function);
         void runSystems();
     };
 };
 
 #endif
+
+
+/*
+** DEPENDENCIES
+*/
+
+#ifndef __AZURITE__INNER__GAME
+#include "Game.hpp"
+#endif
+
+#include "SystemsManager.impl.hpp"

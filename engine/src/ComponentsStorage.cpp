@@ -1,5 +1,4 @@
 #include "ComponentsStorage.hpp"
-#include "ComponentsStorage.impl.hpp"
 
 using namespace Azurite;
 

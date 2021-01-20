@@ -14,6 +14,10 @@
 #include "Modules.hpp"
 #endif
 
+#ifndef __AZURITE__INNER__SYSTEMS_MANAGER
+#include "SystemsManager.hpp"
+#endif
+
 #ifndef __AZURITE__INNER__GAME
 #define __AZURITE__INNER__GAME
 
@@ -23,6 +27,7 @@ namespace Azurite {
     public:
         StateMachine stateMachine;
         ComponentsStorage componentsStorage;
+        SystemsManager systemsManager;
         Game();
         ~Game();
     };
