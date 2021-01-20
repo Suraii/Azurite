@@ -14,7 +14,7 @@ namespace Azurite {
         Game &m_owner;
     public:
         AModule(Game &game) : m_owner(game) {}
-        virtual ~AModule() = 0;
+        virtual ~AModule() {}
         virtual void onStart() = 0;
         virtual void onTick() = 0;
         virtual void onStop() = 0;
@@ -22,28 +22,40 @@ namespace Azurite {
 
     // Module to interact with the screen
     class ADisplayModule : public AModule {
-        void drawSprite(const std::string spriteSheet, unsigned tileId, Transform2D transform);
-        void drawRectangle(Transform2D shape, Color color);
+    public:
+        ADisplayModule(Game &game) : AModule(game) {}
+        virtual ~ADisplayModule() {}
+        virtual void drawSprite(const std::string spriteSheet, unsigned tileId, Transform2D transform) = 0;
+        virtual void drawRectangle(Transform2D shape, Color color) = 0;
     };
 
     // Module to interact with the keyboard / mouse
     class AInputModule : public AModule {
-        bool getInputStatus(unsigned id, Input input);
-        Vector2D getCursorLocation(unsigned id);
+    public:
+        AInputModule(Game &game) : AModule(game) {}
+        virtual ~AInputModule() {}
+        virtual bool getInputStatus(unsigned id, Input input) = 0;
+        virtual Vector2D getCursorLocation(unsigned id) = 0;
     };
 
     // Module to interact with the speakers
     class AAudioModule : public AModule {
-        void playSound(const std::string name, float volume = 1, float pitch = 1, bool loop = false);
-        void stopSound(const std::string name);
+    public:
+        AAudioModule(Game &game) : AModule(game) {}
+        virtual ~AAudioModule() {}
+        virtual void playSound(const std::string name, float volume = 1, float pitch = 1, bool loop = false) = 0;
+        virtual void stopSound(const std::string name) = 0;
     };
 
     // Module to interact with the filesystem
     class AAssetModule : public AModule {
-        void loadAssets(const std::string dir_path);
-        void loadAsset(const std::string asset_path);
-        void releaseAssets(const std::string dir_path);
-        void releaseAsset(const std::string asset_path);
+    public:
+        AAssetModule(Game &game) : AModule(game) {}
+        virtual ~AAssetModule() {}
+        virtual void loadAssets(const std::string dir_path) = 0;
+        virtual void loadAsset(const std::string asset_path) = 0;
+        virtual void releaseAssets(const std::string dir_path) = 0;
+        virtual void releaseAsset(const std::string asset_path) = 0;
     };
 }
 

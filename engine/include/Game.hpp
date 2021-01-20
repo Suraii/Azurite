@@ -21,6 +21,11 @@
 #ifndef __AZURITE__INNER__GAME
 #define __AZURITE__INNER__GAME
 
+#include <vector>
+#include <functional>
+#include <string>
+#include <memory>
+
 namespace Azurite {
 
     class Game {
@@ -30,6 +35,22 @@ namespace Azurite {
         SystemsManager systemsManager;
         Game();
         ~Game();
+
+    private:
+        std::unordered_map<std::string, std::unique_ptr<AModule>> m_modules;
+        std::optional<std::reference_wrapper<AModule>> m_lastModule;
+    public:
+        std::optional<std::reference_wrapper<ADisplayModule>> displayModule;
+        std::optional<std::reference_wrapper<AInputModule>> inputModule;
+        std::optional<std::reference_wrapper<AAudioModule>> audioModule;
+        std::optional<std::reference_wrapper<AAssetModule>> assetModule;
+        Game &addModule(const std::string &name, std::unique_ptr<AModule> module);
+        Game &useAsDisplayModule();
+        Game &useAsInputModule();
+        Game &useAsAudioModule();
+        Game &useAsAssetModule();
+        AModule &getModule(const std::string &name);
+        void removeModule(const std::string &name);
     };
 }
 

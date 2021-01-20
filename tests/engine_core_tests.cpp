@@ -355,3 +355,39 @@ BOOST_AUTO_TEST_CASE(systems_manager_core_system)
     BOOST_CHECK_MESSAGE(game.componentsStorage.getComponents<bool>().size() == 1,
     "Component was not added in storage during core system's run");
 }
+
+/*
+** MODULES
+*/
+
+class DummyModule : public AModule {
+    public:
+        DummyModule(Game &game) : AModule(game) {}
+        ~DummyModule() {}
+        void onStart() override {}
+        void onTick() override {}
+        void onStop() override {}
+};
+
+class DummyInput : public AInputModule {
+    public:
+        DummyInput(Game &game) : AInputModule(game) {}
+        ~DummyInput() {}
+        void onStart() override {}
+        void onTick() override {}
+        void onStop() override {}
+        bool getInputStatus(__attribute__((unused))unsigned id, __attribute__((unused))Input input) override { return true; }
+        Vector2D getCursorLocation(__attribute__((unused))unsigned id) override {return {0.5, 0.5}; }
+};
+
+BOOST_AUTO_TEST_CASE(modules_creating_modules)
+{
+    Game game;
+    std::unique_ptr<AModule> dummy(new DummyModule(game));
+    std::unique_ptr<AModule> input(new DummyInput(game));
+
+    game.addModule("dummy", std::move(dummy));
+    __attribute__((unused))DummyModule &casted = dynamic_cast<DummyModule &>(game.getModule("dummy"));
+    game.addModule("input", std::move(input));
+    __attribute__((unused))DummyInput &casted2 = dynamic_cast<DummyInput &>(game.getModule("input"));
+}
