@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <chrono>
 
 using namespace Azurite;
 
@@ -7,6 +8,10 @@ Game::Game() : stateMachine(*this), componentsStorage(*this), systemsManager(*th
 
 Game::~Game()
 {}
+
+/*
+** MODULES CONTROL METHODS
+*/
 
 Game &Game::addModule(const std::string &name, std::unique_ptr<AModule> module)
 {
@@ -68,4 +73,26 @@ AModule &Game::getModule(const std::string &name)
 void Game::removeModule(const std::string &name)
 {
     m_modules.erase(name);
+}
+
+/*
+** GAME CONTROL METHODS
+*/
+
+void Game::run()
+{
+    int game_tick_delay = 10/*ms*/;
+    std::chrono::time_point last_update = std::chrono::system_clock::now();
+    std::chrono::milliseconds tick_delay(game_tick_delay);
+
+    while(stateMachine.getCurrentState()) {
+        if (std::chrono::system_clock::now() - last_update < tick_delay)
+            continue;
+        last_update = std::chrono::system_clock::now();
+        stateMachine.update();
+        for (auto &[name, module] : m_modules) {
+            (*module).onTick();
+        }
+        systemsManager.runSystems();
+    }
 }
