@@ -50,6 +50,25 @@ BOOST_AUTO_TEST_CASE(states_events)
     }
 }
 
+BOOST_AUTO_TEST_CASE(states_read_event)
+{
+    DummyState state;
+    std::string words[4] = {"It's", "free", "real", "estate"};
+
+    for (unsigned i = 0; i < 4; i++)
+        state.sendEvent(Event{words[i]});
+
+    int count = 0;
+    while (auto event = state.readEvent()) {
+        std::string word = event->name;
+        BOOST_CHECK_MESSAGE(word == words[count],
+"Error in events queue, expected " << words[count] << " got " << word);
+        count++;
+    }
+    BOOST_CHECK_MESSAGE(count == 4,
+"Only " << count << " events on 4 were read");
+}
+
 /*
 ** STATEMACHINE TESTS
 */
@@ -128,14 +147,14 @@ BOOST_AUTO_TEST_CASE(state_machine_get_curent_state)
     DummyState states[2] = {DummyState(), DummyState()};
 
     machine.stackState(std::make_unique<DummyState>(states[0]));
-    BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 9,
-    "Returned current state's id isn't valid, expected 9 got " << machine.getCurrentState()->get().getId());
-    machine.stackState(std::make_unique<DummyState>(states[1]));
     BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 10,
     "Returned current state's id isn't valid, expected 10 got " << machine.getCurrentState()->get().getId());
+    machine.stackState(std::make_unique<DummyState>(states[1]));
+    BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 11,
+    "Returned current state's id isn't valid, expected 11 got " << machine.getCurrentState()->get().getId());
     machine.leaveCurrentState();
-    BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 9,
-    "Returned current state's id isn't valid, expected 9 got " << machine.getCurrentState()->get().getId());
+    BOOST_CHECK_MESSAGE(machine.getCurrentState()->get().getId() == 10,
+    "Returned current state's id isn't valid, expected 10 got " << machine.getCurrentState()->get().getId());
 }
 
 /*
