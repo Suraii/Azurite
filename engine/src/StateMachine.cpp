@@ -74,3 +74,12 @@ void AState::sendEvent(const Event event)
 {
     m_events.push(std::move(event));
 }
+
+std::optional<Event> AState::readEvent()
+{
+    if (m_events.empty())
+        return {};
+    Event buf = m_events.front();
+    m_events.pop();
+    return buf;
+}

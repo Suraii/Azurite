@@ -7,6 +7,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <optional>
 
 namespace Azurite {
 
@@ -44,6 +45,8 @@ namespace Azurite {
     // Control Methods
         unsigned getId() const;
         void sendEvent(const Event event);
+        std::optional<Event> readEvent();
+
     // State Logic Methods
         virtual void onStart(Game &instance) = 0;
         virtual void onTick(Game &instance) = 0;
