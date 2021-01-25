@@ -329,8 +329,6 @@ BOOST_AUTO_TEST_CASE(systems_manager_creating_systems_from_various_types)
     SystemsManager system(game);
     std::function<void(bool &b)> my_function = [](bool &b){ b = true; };
 
-    game.componentsStorage.registerComponent<bool>();
-
     system.createSystem([](bool &b) { b = true; });
     system.createSystem(&change_bools);
     system.createSystem(my_function);
@@ -341,15 +339,13 @@ BOOST_AUTO_TEST_CASE(systems_manager_basic_system)
     Game game;
     SystemsManager system(game);
 
-    game.componentsStorage.registerComponent<WitnessBool>();
-    game.componentsStorage.registerComponent<int>();
-    for (int i = 0; i < 10; i++)
-        game.componentsStorage.buildEntity()
-        .withComponent(WitnessBool()).withComponent(0).build();
     system.createSystem([](WitnessBool &wb, int &i) {
         wb.value = true;
         i++;
     });
+    for (int i = 0; i < 10; i++)
+        game.componentsStorage.buildEntity()
+        .withComponent(WitnessBool()).withComponent(0).build();
     system.runSystems();
     auto components = game.componentsStorage.getComponents<WitnessBool, int>();
 
