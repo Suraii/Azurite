@@ -8,10 +8,18 @@
 #include <tuple>
 #include <type_traits>
 #include <exception>
+#include <concepts>
 
 namespace Azurite {
 
     class Game;
+
+    template<typename T> // Root template
+    struct ComponentsSeeker : ComponentsSeeker<decltype(&T::operator())>
+    {};
+
+    template<typename T>
+    concept system_fct = ComponentsSeeker<T>::isValid;
 
     // Global Logic Handling class
     class SystemsManager {
@@ -34,7 +42,7 @@ namespace Azurite {
     public:
         SystemsManager(Game &owner);
         ~SystemsManager();
-        template<typename T>
+        template<system_fct T>
         void createSystem(T function)
         {
             m_systems.emplace_back(*this, function);

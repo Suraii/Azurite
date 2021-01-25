@@ -2,9 +2,6 @@
 
 using namespace Azurite;
 
-template<typename T> // Root template
-struct ComponentsSeeker : ComponentsSeeker<decltype(&T::operator())> {};
-
 template<class F, class... Args> // Function specification
 struct ComponentsSeeker<F(Args...)> {
     static void registerComponents(Game &game) {
@@ -13,6 +10,7 @@ struct ComponentsSeeker<F(Args...)> {
     std::vector<std::tuple<Args...>> seekComponents(Game &game) {
         return game.componentsStorage.getComponents<Args...>();
     }
+    static constexpr bool isValid = true;
 };
 
 template<class F, class... Args> // Function pointer specification
@@ -23,6 +21,7 @@ struct ComponentsSeeker<F (*)(Args...)> {
     std::vector<std::tuple<Args...>> seekComponents(Game &game) {
         return game.componentsStorage.getComponents<Args...>();
     }
+    static constexpr bool isValid = true;
 };
 
 template<class F, class... Args> // std::function specification
@@ -33,6 +32,7 @@ struct ComponentsSeeker<std::function<F(Args...)>> {
     std::vector<std::tuple<Args...>> seekComponents(Game &game) {
         return game.componentsStorage.getComponents<Args...>();
     }
+    static constexpr bool isValid = true;
 };
 
 template<class F, class R, class... Args> // Lambda specification
@@ -43,6 +43,7 @@ struct ComponentsSeeker<R (F::*)(Args...) const> {
     std::vector<std::tuple<Args...>> seekComponents(Game &game) {
         return game.componentsStorage.getComponents<Args...>();
     }
+    static constexpr bool isValid = true;
 };
 
 
