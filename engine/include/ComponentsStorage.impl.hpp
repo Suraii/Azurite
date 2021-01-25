@@ -60,9 +60,12 @@ void ComponentsStorage::clearZombies(std::map<unsigned, T> &storage)
 template<typename T>
 void ComponentsStorage::registerComponent()
 {
-    std::map<unsigned, T> new_storage;
+    if (m_components.find(std::type_index(typeid(typename std::remove_reference<T>::type))) != m_components.end())
+        return;
 
-    m_components[std::type_index(typeid(T))] = std::move(new_storage);
+    std::map<unsigned, typename std::remove_reference<T>::type> new_storage;
+
+    m_components[std::type_index(typeid(typename std::remove_reference<T>::type))] = std::move(new_storage);
 }
 
 template<typename T, typename... R>
