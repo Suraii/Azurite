@@ -1,5 +1,12 @@
 [requires]
 boost/1.75.0
+sfml/2.5.1@bincrafters/stable
 
 [generators]
 cmake
+
+[options]
+sfml:graphics=True
+sfml:window=True
+sfml:audio=True
+sfml:network=True
