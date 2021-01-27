@@ -39,7 +39,16 @@ void SfmlModule::onStop()
 */
 
 void SfmlModule::drawSprite(const std::string spriteSheet, unsigned tileId, Transform2D transform)
-{}
+{
+    auto &asset = m_sprites.at(spriteSheet);
+    auto &sprite = asset.data.at(tileId);
+
+    sprite.setPosition(transform.location.x, transform.location.y);
+    sprite.setRotation(transform.rotation);
+    sprite.setScale(sf::Vector2f(transform.scale.x, transform.scale.y));
+
+    m_window.draw(sprite);
+}
 
 void SfmlModule::drawRectangle(Transform2D shape, Color color)
 {
