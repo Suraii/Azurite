@@ -78,7 +78,13 @@ void SfmlModule::stopSound(const std::string name)
 */
 
 void SfmlModule::loadAssets(const std::string dir_path)
-{}
+{
+    m_currentPath = dir_path;
+
+    for (auto &file : std::filesystem::directory_iterator(dir_path))
+        loadAsset(file.path());
+    m_currentPath = "";
+}
 
 void SfmlModule::loadAsset(const std::string asset_path)
 {
@@ -127,7 +133,21 @@ void SfmlModule::loadSound(const std::filesystem::path path)
 }
 
 void SfmlModule::releaseAssets(const std::string dir_path)
-{}
+{
+    for (auto &[path, asset] : m_sprites)
+        if (asset.dir == dir_path)
+            m_sprites.erase(path);
+    for (auto &[path, asset] : m_textures)
+        if (asset.dir == dir_path)
+            m_textures.erase(path);
+    for (auto &[path, asset] : m_sounds)
+        if (asset.dir == dir_path)
+            m_sounds.erase(path);
+}
 
 void SfmlModule::releaseAsset(const std::string asset_path)
-{}
+{
+    m_sprites.erase(asset_path);
+    m_textures.erase(asset_path);
+    m_sounds.erase(asset_path);
+}
