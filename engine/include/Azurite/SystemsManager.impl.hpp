@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace Azurite;
+namespace Azurite {
 
 template<class F, class... Args> // Function specification
 struct ComponentsSeeker<F(Args...)> {
@@ -61,3 +61,5 @@ SystemsManager::System::System(SystemsManager &owner, T function) : m_owner(owne
             std::apply(casted_function, pack);
     };
 }
+
+};
