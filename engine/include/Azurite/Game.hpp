@@ -3,19 +3,19 @@
 */
 
 #ifndef __AZURITE__INNER__STATE_MACHINE
-#include "StateMachine.hpp"
+#include "Azurite/StateMachine.hpp"
 #endif
 
 #ifndef __AZURITE__INNER__COMPONENTS_STORAGE
-#include "ComponentsStorage.hpp"
+#include "Azurite/ComponentsStorage.hpp"
 #endif
 
 #ifndef __AZURITE__INNER__MODULES
-#include "Modules.hpp"
+#include "Azurite/Modules.hpp"
 #endif
 
 #ifndef __AZURITE__INNER__SYSTEMS_MANAGER
-#include "SystemsManager.hpp"
+#include "Azurite/SystemsManager.hpp"
 #endif
 
 #ifndef __AZURITE__INNER__GAME

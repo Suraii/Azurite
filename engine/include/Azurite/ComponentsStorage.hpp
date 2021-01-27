@@ -9,7 +9,7 @@
 #include <tuple>
 #include <exception>
 
-#include "Snitch.hpp"
+#include "Azurite/Snitch.hpp"
 
 namespace Azurite {
 
@@ -122,7 +122,7 @@ namespace Azurite {
 #endif
 
 #ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #endif
 
-#include "ComponentsStorage.impl.hpp"
+#include "Azurite/ComponentsStorage.impl.hpp"

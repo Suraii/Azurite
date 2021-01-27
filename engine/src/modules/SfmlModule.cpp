@@ -1,5 +1,5 @@
 #include "Azurite/modules/SfmlModule.hpp"
-#include "Snitch.hpp"
+#include "Azurite/Snitch.hpp"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>

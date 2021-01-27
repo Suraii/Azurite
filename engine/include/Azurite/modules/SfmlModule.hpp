@@ -1,7 +1,7 @@
-#ifndef __AZURITE__OUTER__SFML_MODULE
-#define __AZURITE__OUTER__SFML_MODULE
+#ifndef __AZURITE__BUILT_IN__SFML_MODULE
+#define __AZURITE__BUILT_IN__SFML_MODULE
 
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <unordered_map>

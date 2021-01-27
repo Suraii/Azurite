@@ -60,7 +60,7 @@ namespace Azurite {
 */
 
 #ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #endif
 
-#include "SystemsManager.impl.hpp"
+#include "Azurite/SystemsManager.impl.hpp"

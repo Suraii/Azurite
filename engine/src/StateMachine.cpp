@@ -1,4 +1,4 @@
-#include "StateMachine.hpp"
+#include "Azurite/StateMachine.hpp"
 
 using namespace Azurite;
 

@@ -1,4 +1,4 @@
-#include "Snitch.hpp"
+#include "Azurite/Snitch.hpp"
 #include <iostream>
 
 namespace Azurite {

@@ -2,10 +2,10 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <string>
-#include "Game.hpp"
-#include "StateMachine.hpp"
-#include "ComponentsStorage.hpp"
-#include "SystemsManager.hpp"
+#include "Azurite/Game.hpp"
+#include "Azurite/StateMachine.hpp"
+#include "Azurite/ComponentsStorage.hpp"
+#include "Azurite/SystemsManager.hpp"
 
 using namespace Azurite;
 

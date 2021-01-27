@@ -2,7 +2,7 @@
 #define __AZURITE__INNER__MODULES
 
 #include <string>
-#include <Types.hpp>
+#include "Azurite/Types.hpp"
 
 namespace Azurite {
 
@@ -66,5 +66,5 @@ namespace Azurite {
 */
 
 #ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #endif

@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #include <chrono>
 
 using namespace Azurite;

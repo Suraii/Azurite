@@ -68,5 +68,5 @@ namespace Azurite {
 */
 
 #ifndef __AZURITE__INNER__GAME
-#include "Game.hpp"
+#include "Azurite/Game.hpp"
 #endif
