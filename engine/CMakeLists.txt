@@ -6,6 +6,7 @@ src/ComponentsStorage.cpp
 src/SystemsManager.cpp
 src/Snitch.cpp
 src/lib.cpp
+src/modules/SfmlModule.cpp
 )
 
 # Linking inner headers to the lib, hopefully this will be replaced by module partitions with gcc 11
@@ -13,5 +14,5 @@ target_include_directories(azurite_engine PUBLIC
 ${PROJECT_SOURCE_DIR}/engine/include
 )
 
-# Linking Boost libs to the engine
-#target_link_libraries(azurite_engine PUBLIC ${CONAN_LIBS})
+# Linking SFML library to the lib
+target_link_libraries(azurite_engine PUBLIC ${CONAN_LIBS})

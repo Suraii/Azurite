@@ -386,12 +386,12 @@ class DummyModule : public AModule {
 
 class DummyInput : public AInputModule {
     public:
-        DummyInput(Game &game) : AInputModule(game) {}
+        DummyInput(Game &game) : AModule(game), AInputModule(game) {}
         ~DummyInput() {}
         void onStart() override {}
         void onTick() override {}
         void onStop() override {}
-        bool getInputStatus(__attribute__((unused))unsigned id, __attribute__((unused))Input input) override { return true; }
+        bool getInputStatus(__attribute__((unused))Input input, __attribute__((unused))unsigned id) override { return true; }
         Vector2D getCursorLocation(__attribute__((unused))unsigned id) override {return {0.5, 0.5}; }
 };
 

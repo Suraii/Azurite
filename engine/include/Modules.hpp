@@ -21,7 +21,7 @@ namespace Azurite {
     };
 
     // Module to interact with the screen
-    class ADisplayModule : public AModule {
+    class ADisplayModule : virtual public AModule {
     public:
         ADisplayModule(Game &game) : AModule(game) {}
         virtual ~ADisplayModule() {}
@@ -30,16 +30,16 @@ namespace Azurite {
     };
 
     // Module to interact with the keyboard / mouse
-    class AInputModule : public AModule {
+    class AInputModule : virtual public AModule {
     public:
         AInputModule(Game &game) : AModule(game) {}
         virtual ~AInputModule() {}
-        virtual bool getInputStatus(unsigned id, Input input) = 0;
+        virtual bool getInputStatus(Input input, unsigned id) = 0;
         virtual Vector2D getCursorLocation(unsigned id) = 0;
     };
 
     // Module to interact with the speakers
-    class AAudioModule : public AModule {
+    class AAudioModule : virtual public AModule {
     public:
         AAudioModule(Game &game) : AModule(game) {}
         virtual ~AAudioModule() {}
@@ -48,7 +48,7 @@ namespace Azurite {
     };
 
     // Module to interact with the filesystem
-    class AAssetModule : public AModule {
+    class AAssetModule : virtual public AModule {
     public:
         AAssetModule(Game &game) : AModule(game) {}
         virtual ~AAssetModule() {}
