@@ -77,10 +77,22 @@ Vector2D SfmlModule::getCursorLocation(unsigned id)
 */
 
 void SfmlModule::playSound(const std::string name, float volume, float pitch, bool loop)
-{}
+{
+    auto &sound = m_sounds.at(name).data;
+
+    sound.setVolume(volume);
+    sound.setPitch(pitch);
+    sound.setLoop(loop);
+
+    sound.play();
+}
 
 void SfmlModule::stopSound(const std::string name)
-{}
+{
+    auto &sound = m_sounds.at(name).data;
+
+    sound.stop();
+}
 
 /*
 ** Asset Module Implementation
