@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace Azurite;
+namespace Azurite {
 
 template<typename... T>
 bool ComponentsStorage::entityIsValid(const unsigned id, const std::map<unsigned, T>&... storages) const
@@ -78,4 +78,6 @@ template<typename T, typename... R>
 std::map<unsigned, std::tuple<T&, R&...>> ComponentsStorage::getComponentsWithIds()
 {
     return joinStoragesWithIds(getStorage<std::remove_reference_t<T>>(), getStorage<std::remove_reference_t<R>>()...);
+}
+
 }
