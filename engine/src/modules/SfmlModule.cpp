@@ -28,6 +28,11 @@ void SfmlModule::onStart()
 
 void SfmlModule::onTick()
 {
+    sf::Event event;
+
+    m_inputs.clear();
+    while (m_window.pollEvent(event))
+        m_inputs.push_back(static_cast<Input>(static_cast<unsigned>(event.type)));
     m_window.display();
 }
 
@@ -66,11 +71,20 @@ void SfmlModule::drawRectangle(Transform2D shape, Color color)
 ** Input Module Implementation
 */
 
-bool SfmlModule::getInputStatus(Input input, unsigned id)
-{}
+bool SfmlModule::getInputStatus(Input input, __attribute__((unused))unsigned id)
+{
+    for (auto &_input : m_inputs)
+        if (_input == input)
+            return true;
+    return false;
+}
 
-Vector2D SfmlModule::getCursorLocation(unsigned id)
-{}
+Vector2D SfmlModule::getCursorLocation(__attribute__((unused))unsigned id)
+{
+    sf::Vector2i cursor = sf::Mouse::getPosition();
+
+    return {static_cast<float>(cursor.x), static_cast<float>(cursor.y)};
+}
 
 /*
 ** Audio Module Implementation

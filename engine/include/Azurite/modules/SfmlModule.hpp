@@ -28,6 +28,7 @@ namespace Azurite {
         std::unordered_map<std::string, Asset<sf::Texture>> m_textures;
         std::unordered_map<std::string, Asset<std::unordered_map<unsigned, sf::Sprite>>> m_sprites;
         std::unordered_map<std::string, Asset<sf::Music>> m_sounds;
+        std::vector<Input> m_inputs;
         std::string m_currentPath;
 
     public:
