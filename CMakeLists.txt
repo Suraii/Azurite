@@ -25,4 +25,5 @@ add_subdirectory(tests)
 
 # Example games made with Azurite
 add_subdirectory(examples/test)
+add_subdirectory(examples/draft)
 

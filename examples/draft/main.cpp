@@ -1,6 +1,6 @@
-#include "Azurite/print_hello.hpp"
+#include "Azurite/Game.hpp"
 
 int main()
 {
-    Azurite::print_hello();
+    Azurite::Game game;
 }
