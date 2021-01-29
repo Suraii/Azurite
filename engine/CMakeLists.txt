@@ -7,6 +7,7 @@ src/SystemsManager.cpp
 src/Snitch.cpp
 src/lib.cpp
 src/modules/SfmlModule.cpp
+src/systems/Ssprites_drawer.cpp
 )
 
 # Linking inner headers to the lib, hopefully this will be replaced by module partitions with gcc 11
