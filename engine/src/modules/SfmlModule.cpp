@@ -136,6 +136,8 @@ void SfmlModule::loadSpriteSheet(std::filesystem::path path)
     sf::Texture texture;
     texture.loadFromFile(path);
 
+    m_textures[path.stem()] = {std::move(texture), m_currentPath};
+
     boost::property_tree::ptree root(".");
     boost::property_tree::read_json(path.replace_extension(".json"), root);
 
@@ -143,7 +145,7 @@ void SfmlModule::loadSpriteSheet(std::filesystem::path path)
 
     m_sprites[path.stem()] = {};
     for (auto const &sprite : root.get_child("sprites")) {
-        sf::Sprite new_sprite(texture);
+        sf::Sprite new_sprite(m_textures[path.stem()].data);
         sf::Rect<int> texture_rect(
             sprite.second.get<int>("origin_x"),
             sprite.second.get<int>("origin_y"),
@@ -156,8 +158,6 @@ void SfmlModule::loadSpriteSheet(std::filesystem::path path)
         asset.data[sprite.second.get<int>("id")] = std::move(new_sprite);
         asset.dir = m_currentPath;
     }
-
-    m_textures[path.stem()] = {std::move(texture), m_currentPath};
 }
 
 void SfmlModule::loadSound(const std::filesystem::path path)
