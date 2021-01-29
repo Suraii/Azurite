@@ -1,5 +1,6 @@
 # Compiling the game from given sources
-add_executable(draft main.cpp)
+add_executable(draft main.cpp
+states/MainState.cpp)
 
 # Linking Azurite Engine's library to the game
 target_link_libraries(draft PUBLIC azurite_engine)
