@@ -127,7 +127,7 @@ void SfmlModule::loadAsset(const std::string asset_path)
         loadSpriteSheet(asset_path);
     else if (asset_path.ends_with(".ogg"))
         loadSound(asset_path);
-    else
+    else if (!asset_path.ends_with(".json"))
         Snitch::warn() << "Trying to load asset of unknown type : '" << asset_path << "'" << Snitch::endl;
 }
 
