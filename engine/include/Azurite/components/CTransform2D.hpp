@@ -5,7 +5,11 @@
 
 namespace Azurite {
 
-struct CTransform2D : Transform2D {};
+struct CTransform2D {
+    Vector2D location = {0, 0};
+    float rotation = 0;
+    Vector2D scale = {1, 1};
+};
 
 }
 
