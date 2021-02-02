@@ -101,3 +101,12 @@ void Game::run()
             << " ms, that's over the maximum needed to maintain a constant framerate (" << game_tick_delay << " ms)" << Snitch::endl;
     }
 }
+
+void Game::stop()
+{
+    while(stateMachine.getCurrentState())
+        stateMachine.leaveCurrentState();
+    for (auto &[name, module] : m_modules) {
+        module->onStop();
+    }
+}

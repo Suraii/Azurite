@@ -57,6 +57,7 @@ namespace Azurite {
         void removeModule(const std::string &name);
     // Game Control Methods
         void run();
+        void stop();
     };
 }
 
