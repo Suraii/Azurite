@@ -26,18 +26,24 @@ SfmlModule::~SfmlModule()
 void SfmlModule::onStart()
 {}
 
+#include <iostream>
+
 void SfmlModule::onTick()
 {
     sf::Event event;
 
-    m_inputs.clear();
     while (m_window.pollEvent(event))
-        m_inputs.push_back(static_cast<Input>(static_cast<unsigned>(event.type)));
+    {
+        if (event.type == sf::Event::Closed)
+            m_owner.stop();
+    }
     m_window.display();
+    m_window.clear();
 }
 
 void SfmlModule::onStop()
-{}
+{
+}
 
 /*
 ** Display Module Implementation
@@ -71,11 +77,17 @@ void SfmlModule::drawRectangle(Transform2D shape, Color color)
 ** Input Module Implementation
 */
 
+#include <iostream>
+
 bool SfmlModule::getInputStatus(Input input, __attribute__((unused))unsigned id)
 {
-    for (auto &_input : m_inputs)
-        if (_input == input)
-            return true;
+    if (isKeyboard(input)) {
+        return sf::Keyboard::isKeyPressed(InputToSfmlKey(input));
+    }
+    else if (isMouse(input)) {
+        return sf::Mouse::isButtonPressed(InputToSfmlButton(input));
+    }
+    Snitch::warn() << "Unrecognized input" << Snitch::endl;
     return false;
 }
 
@@ -83,7 +95,12 @@ Vector2D SfmlModule::getCursorLocation(__attribute__((unused))unsigned id)
 {
     sf::Vector2i cursor = sf::Mouse::getPosition();
 
-    return {static_cast<float>(cursor.x), static_cast<float>(cursor.y)};
+    /*
+    ** For some reasons the result of this was 62 pixel above the correct position of my Cursor
+    ** So, I did this VERY PROFESSIONAL FIX
+    ** TODO: Fix this correctly
+    */
+    return {static_cast<float>(cursor.x), static_cast<float>(cursor.y) - 62};
 }
 
 /*

@@ -34,8 +34,8 @@ namespace Azurite {
     public:
         AInputModule(Game &game) : AModule(game) {}
         virtual ~AInputModule() {}
-        virtual bool getInputStatus(Input input, unsigned id) = 0;
-        virtual Vector2D getCursorLocation(unsigned id) = 0;
+        virtual bool getInputStatus(Input input, unsigned id = 0) = 0;
+        virtual Vector2D getCursorLocation(unsigned id = 0) = 0;
     };
 
     // Module to interact with the speakers

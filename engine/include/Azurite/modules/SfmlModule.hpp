@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <filesystem>
+#include <exception>
 
 namespace Azurite {
 
@@ -28,7 +29,6 @@ namespace Azurite {
         std::unordered_map<std::string, Asset<sf::Texture>> m_textures;
         std::unordered_map<std::string, Asset<std::unordered_map<unsigned, sf::Sprite>>> m_sprites;
         std::unordered_map<std::string, Asset<sf::Music>> m_sounds;
-        std::vector<Input> m_inputs;
         std::string m_currentPath;
 
     public:
@@ -56,6 +56,18 @@ namespace Azurite {
         void releaseAsset(const std::string asset_path) override;
     };
 
+    // Input conversion utils
+
+    static inline sf::Keyboard::Key InputToSfmlKey(Input input) {
+        if (!isKeyboard(input))
+            throw std::invalid_argument("Trying to convert non-keyboard input to Sfml Key");
+        return static_cast<sf::Keyboard::Key>(static_cast<int>(input));
+    }
+    static inline sf::Mouse::Button InputToSfmlButton(Input input) {
+        if (!isMouse(input))
+            throw std::invalid_argument("Trying to convert non-mouse input to Sfml Button");
+        return static_cast<sf::Mouse::Button>(static_cast<int>(input) - 100);
+    }
 };
 
 #endif
