@@ -1,4 +1,5 @@
 #include "MainState.hpp"
+#include "GameState.hpp"
 
 #include "Azurite/Game.hpp"
 
@@ -6,7 +7,7 @@
 #include "Azurite/components/CAnimatedSprite.hpp"
 #include "Azurite/components/CTransform2D.hpp"
 #include "Azurite/components/CCollisionBox.hpp"
-#include "components/CButton.hpp"
+#include "Azurite/components/CButton.hpp"
 
 void MainState::onStart(Azurite::Game &instance)
 {
@@ -22,7 +23,11 @@ void MainState::onStart(Azurite::Game &instance)
     instance.componentsStorage.buildEntity()
     .withComponent(Azurite::CSprite{"shooting_range_spritesheet"})
     .withComponent(Azurite::CTransform2D{{1045, 450}, 0, {5, 5}})
-    .withComponent(CButton{0, 1, 2, [](Azurite::Game &game){}})
+    .withComponent(Azurite::CButton{0, 1, 2, [](Azurite::Game &game){
+        GameState state;
+
+        game.stateMachine.setState(std::make_unique<GameState>(state));
+    }})
     .withComponent(Azurite::CCollisionBox{40, 7})
     .build();
 
@@ -30,7 +35,7 @@ void MainState::onStart(Azurite::Game &instance)
     instance.componentsStorage.buildEntity()
     .withComponent(Azurite::CSprite{"shooting_range_spritesheet", 10})
     .withComponent(Azurite::CTransform2D{{1045, 550}, 0, {5, 5}})
-    .withComponent(CButton{10, 11, 12, [](Azurite::Game &game){
+    .withComponent(Azurite::CButton{10, 11, 12, [](Azurite::Game &game){
         game.stop();
     }})
     .withComponent(Azurite::CCollisionBox{30, 7})

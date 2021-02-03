@@ -1,6 +1,7 @@
 # Compiling the game from given sources
 add_executable(draft main.cpp
 states/MainState.cpp
+states/GameState.cpp
 systems/ShootingRangeSystems.cpp
 )
 
