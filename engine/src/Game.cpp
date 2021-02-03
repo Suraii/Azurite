@@ -5,7 +5,9 @@
 using namespace Azurite;
 
 Game::Game() : stateMachine(*this), componentsStorage(*this), systemsManager(*this)
-{}
+{
+    importBuiltIns();
+}
 
 Game::~Game()
 {}
@@ -109,4 +111,56 @@ void Game::stop()
     for (auto &[name, module] : m_modules) {
         module->onStop();
     }
+}
+
+/*
+** GAME CONTENT METHODS
+*/
+
+#include "Azurite/systems/SpriteSystems.hpp"
+#include "Azurite/systems/LifeSystems.hpp"
+#include "Azurite/systems/UISystems.hpp"
+
+void Game::importBuiltIns()
+{
+    // Misc
+    componentsStorage.registerComponent<CTransform2D>();
+    componentsStorage.registerComponent<CCollisionBox>();
+    // Sprites
+    componentsStorage.registerComponent<CSprite>();
+    componentsStorage.registerComponent<CAnimatedSprite>();
+    systemsManager.createCoreSystem(Ssprites_drawer);
+    systemsManager.createSystem(Sanimated_sprite_updater);
+    // Life
+    componentsStorage.registerComponent<CDeathRattle>();
+    systemsManager.createCoreSystem(Sdestructible_reaper);
+    systemsManager.createCoreSystem(Sdeath_rattle_invoker);
+    // UI
+    systemsManager.createSystem(Sbutton_sprite_updater);
+    systemsManager.createCoreSystem(Sbutton_params_updater);
+}
+
+void Game::enableDebugSystems()
+{
+    // DEBUG Collision box displayer
+    systemsManager.createCoreSystem([](Azurite::Game &game){
+        auto params = game.componentsStorage.getComponents<Azurite::CCollisionBox, Azurite::CTransform2D>();
+        for (auto &[box, transform] : params) {
+            game.displayModule->get().drawRectangle({{transform.location.x, transform.location.y},
+            transform.rotation, {box.size.x * transform.scale.x, box.size.y * transform.scale.y}},
+            {255, 0, 0, 125});
+        }
+    });
+    // DEBUG Draw Cursor
+    systemsManager.createCoreSystem([](Azurite::Game &game){
+        Azurite::Vector2D cursor = game.inputModule->get().getCursorLocation();
+        bool lclick = game.inputModule->get().getInputStatus(Azurite::Input::MOUSE_LEFT_CLICK);
+        unsigned char red = (lclick)? 255 : 0;
+        bool rclick = game.inputModule->get().getInputStatus(Azurite::Input::MOUSE_RIGHT_CLICK);
+        unsigned char blue = (rclick)? 255 : 0;
+        game.displayModule->get().drawRectangle(
+            {{cursor.x, cursor.y}, 0, {30, 30}},
+            {red, 255, blue, 125}
+        );
+    });
 }
