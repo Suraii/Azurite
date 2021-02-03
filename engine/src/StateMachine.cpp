@@ -24,16 +24,16 @@ void StateMachine::setState(std::unique_ptr<AState> state)
 {
     if (getCurrentState())
         getCurrentState()->get().onStop(m_owner);
-    (*state).onStart(m_owner);
     m_states.push(std::move(state));
+    getCurrentState()->get().onStart(m_owner);
 }
 
 void StateMachine::stackState(std::unique_ptr<AState> state)
 {
     if (getCurrentState())
         getCurrentState()->get().onPause(m_owner);
-    (*state).onStart(m_owner);
     m_states.push(std::move(state));
+    getCurrentState()->get().onStart(m_owner);
 }
 
 void StateMachine::leaveCurrentState()
