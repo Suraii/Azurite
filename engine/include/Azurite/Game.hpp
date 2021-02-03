@@ -58,6 +58,9 @@ namespace Azurite {
     // Game Control Methods
         void run();
         void stop();
+    // Game content Methods
+        void importBuiltIns();
+        void enableDebugSystems();
     };
 }
 
