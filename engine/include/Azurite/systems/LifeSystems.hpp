@@ -4,6 +4,7 @@
 #include "Azurite/Game.hpp"
 #include "Azurite/components/CDestructible.hpp"
 #include "Azurite/components/CDeathRattle.hpp"
+#include "Azurite/components/CLifetime.hpp"
 
 namespace Azurite {
 
@@ -16,8 +17,14 @@ namespace Azurite {
     /*
     ** Core system that execute death rattles
     */
+
     void Sdeath_rattle_invoker(Game &game);
 
+    /*
+    ** System that tick entities lifetimes and kill them when needed
+    */
+
+    void Slifetime_ticker(CLifetime &lifetime, CDestructible &destructible);
 }
 
 #endif

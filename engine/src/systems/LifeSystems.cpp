@@ -19,3 +19,11 @@ void Azurite::Sdeath_rattle_invoker(Game &game)
         if (!destructible.isAlive)
             death_rattle.action(game);
 }
+
+void Azurite::Slifetime_ticker(CLifetime &lifetime, CDestructible &destructible)
+{
+    lifetime.ticks--;
+
+    if (lifetime.ticks <= 0)
+        destructible.isAlive = false;
+}

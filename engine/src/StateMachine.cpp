@@ -22,8 +22,10 @@ void StateMachine::update()
 
 void StateMachine::setState(std::unique_ptr<AState> state)
 {
-    if (getCurrentState())
+    if (getCurrentState()) {
         getCurrentState()->get().onStop(m_owner);
+        m_states.pop();
+    }
     m_states.push(std::move(state));
     getCurrentState()->get().onStart(m_owner);
 }

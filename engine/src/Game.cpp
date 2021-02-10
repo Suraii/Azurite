@@ -120,6 +120,7 @@ void Game::stop()
 #include "Azurite/systems/SpriteSystems.hpp"
 #include "Azurite/systems/LifeSystems.hpp"
 #include "Azurite/systems/UISystems.hpp"
+#include "Azurite/systems/MovementSystems.hpp"
 
 void Game::importBuiltIns()
 {
@@ -135,9 +136,12 @@ void Game::importBuiltIns()
     componentsStorage.registerComponent<CDeathRattle>();
     systemsManager.createCoreSystem(Sdestructible_reaper);
     systemsManager.createCoreSystem(Sdeath_rattle_invoker);
+    systemsManager.createSystem(Slifetime_ticker);
     // UI
     systemsManager.createSystem(Sbutton_sprite_updater);
     systemsManager.createCoreSystem(Sbutton_params_updater);
+    //Movement
+    systemsManager.createSystem(Svelocity_applier);
 }
 
 void Game::enableDebugSystems()
