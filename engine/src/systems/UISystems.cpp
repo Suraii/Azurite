@@ -40,3 +40,17 @@ void Azurite::Sbutton_params_updater(Game &game)
         }
     }
 }
+
+void Azurite::Sinput_action_invoker(Azurite::Game& game)
+{
+    auto components = game.componentsStorage.getComponents<CInputAction>();
+    auto &inputModule = game.inputModule->get();
+
+    for (auto &[iact] : components)
+        if (!inputModule.getInputStatus(iact.input))
+            iact.ready = true;
+        else if (iact.ready) {
+            iact.action(game);
+            iact.ready = false;
+        }
+}

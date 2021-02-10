@@ -6,6 +6,7 @@
 #include "Azurite/components/CButton.hpp"
 #include "Azurite/components/CCollisionBox.hpp"
 #include "Azurite/components/CTransform2D.hpp"
+#include "Azurite/components/CInputAction.hpp"
 
 namespace Azurite {
 
@@ -20,6 +21,12 @@ void Sbutton_sprite_updater(Azurite::CSprite &sprite, CButton &button);
 */
 
 void Sbutton_params_updater(Azurite::Game &game);
+
+/*
+** Core System that trigger actions of input actions when needed
+*/
+
+void Sinput_action_invoker(Azurite::Game& game);
 
 };
 
