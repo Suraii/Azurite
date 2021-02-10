@@ -138,8 +138,10 @@ void Game::importBuiltIns()
     systemsManager.createCoreSystem(Sdeath_rattle_invoker);
     systemsManager.createSystem(Slifetime_ticker);
     // UI
+    componentsStorage.registerComponent<CInputAction>();
     systemsManager.createSystem(Sbutton_sprite_updater);
     systemsManager.createCoreSystem(Sbutton_params_updater);
+    systemsManager.createCoreSystem(Sinput_action_invoker);
     //Movement
     systemsManager.createSystem(Svelocity_applier);
 }
