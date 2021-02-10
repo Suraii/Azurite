@@ -4,8 +4,12 @@
 #include <functional>
 #include "Azurite/Game.hpp"
 
+namespace Azurite {
+
 struct CDeathRattle {
     std::function<void(Azurite::Game &)> action = [](Azurite::Game &){};
+};
+
 };
 
 #endif
