@@ -15,6 +15,7 @@ ScoreState::ScoreState(int score) : m_score(score), m_ticks(0), m_starsFilled(0)
 
 void ScoreState::onStart(Azurite::Game &instance)
 {
+    // Building 20 'Empty' stars to represent the scores
     for (char i = 0; i < 20; i++) {
         instance.componentsStorage.buildEntity()
             .withComponent(Azurite::CTransform2D{{STARS_ORIGIN + 50 * i + STARS_INTERSPACE * i, 300}, 0, {10, 10}})
@@ -35,6 +36,7 @@ void ScoreState::onStart(Azurite::Game &instance)
 
 void ScoreState::onTick(Azurite::Game &instance)
 {
+    // 'Filling' stars by placing colored stars on them for every target hit in precedent state
     if (m_starsFilled < m_score && m_ticks >= STARS_FILL_DELAY) {
         instance.componentsStorage.buildEntity()
             .withComponent(Azurite::CTransform2D{{STARS_ORIGIN + 50 * m_starsFilled + STARS_INTERSPACE * m_starsFilled, 300}, 0, {10, 10}})

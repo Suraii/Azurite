@@ -6,11 +6,13 @@
 
 void PauseState::onStart(Azurite::Game &instance)
 {
+    // Pause text
     instance.componentsStorage.buildEntity()
         .withComponent(Azurite::CSprite{"shooting_range_spritesheet", 70})
         .withComponent(Azurite::CTransform2D{{852.5, 300}, 0, {5, 5}})
     .build();
 
+    // Entity that let you resume the game by pressing 'Escape'
     instance.componentsStorage.buildEntity()
         .withComponent(Azurite::CInputAction{Azurite::Input::ESC, [](Azurite::Game &game){
             PauseState state;

@@ -7,7 +7,6 @@
 
 #include "systems/ShootingRangeSystems.hpp"
 #include "states/MainState.hpp"
-
 #include "states/ScoreState.hpp"
 
 int main()
