@@ -2,9 +2,7 @@
 #define __AZURITE__BUILT_IN_LIFE_SYSTEMS
 
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CDestructible.hpp"
-#include "Azurite/components/CDeathRattle.hpp"
-#include "Azurite/components/CLifetime.hpp"
+#include "Azurite/components/LifeComponents.hpp"
 
 namespace Azurite {
 

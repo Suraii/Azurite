@@ -2,11 +2,7 @@
 #define __AZURITE__BUILT_IN_UI_SYSTEMS
 
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CButton.hpp"
-#include "Azurite/components/CCollisionBox.hpp"
-#include "Azurite/components/CTransform2D.hpp"
-#include "Azurite/components/CInputAction.hpp"
+#include "Azurite/components/UIComponents.hpp"
 
 namespace Azurite {
 
