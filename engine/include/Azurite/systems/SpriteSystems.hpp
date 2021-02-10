@@ -2,9 +2,7 @@
 #define __AZURITE__BUILT_IN_SPRITE_SYSTEMS
 
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CAnimatedSprite.hpp"
-#include "Azurite/components/CTransform2D.hpp"
+#include "Azurite/components/SpriteComponents.hpp"
 
 namespace Azurite {
 

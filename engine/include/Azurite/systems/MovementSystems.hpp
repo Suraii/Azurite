@@ -2,8 +2,7 @@
 #define __AZURITE__BUILT_IN_MOVEMENT_SYSTEMS
 
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CTransform2D.hpp"
-#include "Azurite/components/CVelocity.hpp"
+#include "Azurite/components/MovementComponents.hpp"
 
 namespace Azurite {
 
