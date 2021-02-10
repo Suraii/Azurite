@@ -2,6 +2,7 @@
 add_executable(draft main.cpp
 states/MainState.cpp
 states/GameState.cpp
+states/PauseState.cpp
 systems/ShootingRangeSystems.cpp
 )
 

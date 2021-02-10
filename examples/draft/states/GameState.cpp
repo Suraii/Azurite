@@ -1,4 +1,5 @@
 #include "GameState.hpp"
+#include "PauseState.hpp"
 #include "Azurite/Game.hpp"
 #include "Azurite/components/CSprite.hpp"
 #include "Azurite/components/CAnimatedSprite.hpp"
@@ -9,6 +10,7 @@
 #include "Azurite/components/CLifetime.hpp"
 #include "Azurite/components/CVelocity.hpp"
 #include "Azurite/components/CDeathRattle.hpp"
+#include "Azurite/components/CInputAction.hpp"
 #include "components/CTarget.hpp"
 
 constexpr unsigned TARGET_SUMMON_DELAY = 100;
@@ -23,7 +25,15 @@ GameState::GameState() : m_ticks(0), m_targetCounts(20), m_generator()
 {}
 
 void GameState::onStart(Azurite::Game &instance)
-{}
+{
+    instance.componentsStorage.buildEntity()
+        .withComponent(Azurite::CInputAction{Azurite::Input::ESC, [](Azurite::Game &game){
+            PauseState state;
+
+            game.stateMachine.stackState(std::make_unique<PauseState>(state));
+        }})
+        .build();
+}
 
 void GameState::onTick(Azurite::Game &instance)
 {
@@ -35,16 +45,16 @@ void GameState::onTick(Azurite::Game &instance)
 
     if (m_ticks >= TARGET_SUMMON_DELAY && m_targetCounts > 0) {
         instance.componentsStorage.buildEntity()
-        .withComponent(Azurite::CTransform2D{{1920, heightDistribution(m_generator)}, 0, {scale, scale}})
-        .withComponent(Azurite::CSprite{"shooting_range_spritesheet", 20})
-        .withComponent(Azurite::CCollisionBox{7, 7})
-        .withComponent(Azurite::CButton{20, 20, 21})
-        .withComponent(Azurite::CDestructible{})
-        .withComponent(Azurite::CDeathRattle{[](Azurite::Game &game){
-            game.stateMachine.getCurrentState()->get().sendEvent(Azurite::Event{"Target Destroyed"});
-        }})
-        .withComponent(Azurite::CVelocity{-1 * velocityDistribution(m_generator), 0})
-        .withComponent(CTarget{})
+            .withComponent(Azurite::CTransform2D{{1920, heightDistribution(m_generator)}, 0, {scale, scale}})
+            .withComponent(Azurite::CSprite{"shooting_range_spritesheet", 20})
+            .withComponent(Azurite::CCollisionBox{7, 7})
+            .withComponent(Azurite::CButton{20, 20, 21})
+            .withComponent(Azurite::CDestructible{})
+            .withComponent(Azurite::CDeathRattle{[](Azurite::Game &game){
+                game.stateMachine.getCurrentState()->get().sendEvent(Azurite::Event{"Target Destroyed"});
+            }})
+            .withComponent(Azurite::CVelocity{-1 * velocityDistribution(m_generator), 0})
+            .withComponent(CTarget{})
         .build();
         m_ticks = 0;
         m_targetCounts -= 1;
