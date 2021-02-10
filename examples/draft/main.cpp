@@ -8,6 +8,8 @@
 #include "systems/ShootingRangeSystems.hpp"
 #include "states/MainState.hpp"
 
+#include "states/ScoreState.hpp"
+
 int main()
 {
     // Creating the game itself
@@ -27,7 +29,6 @@ int main()
 
     // Creating a state and adding it in the state queue
     MainState state;
-
     game.stateMachine.setState(std::make_unique<MainState>(state));
 
     // Target systems

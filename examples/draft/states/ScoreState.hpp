@@ -3,14 +3,13 @@
 #include "Azurite/StateMachine.hpp"
 #include <random>
 
-class GameState : public Azurite::AState {
+class ScoreState : public Azurite::AState {
 private:
-    unsigned m_ticks;
-    int m_targetCounts;
-    std::default_random_engine m_generator;
     int m_score;
+    unsigned m_ticks;
+    unsigned m_starsFilled;
 public:
-    GameState();
+    ScoreState(int score);
     void onStart(Azurite::Game &instance);
     void onTick(Azurite::Game &instance);
     void onPause(Azurite::Game &instance);

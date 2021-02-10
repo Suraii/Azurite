@@ -1,5 +1,6 @@
 #include "GameState.hpp"
 #include "PauseState.hpp"
+#include "ScoreState.hpp"
 #include "Azurite/Game.hpp"
 #include "Azurite/components/CSprite.hpp"
 #include "Azurite/components/CAnimatedSprite.hpp"
@@ -21,7 +22,7 @@ constexpr float TARGET_MAX_VELOCITY = 10;
 constexpr float TARGET_MIN_SCALE = 7;
 constexpr float TARGET_MAX_SCALE = 15;
 
-GameState::GameState() : m_ticks(0), m_targetCounts(20), m_generator()
+GameState::GameState() : m_ticks(0), m_targetCounts(20), m_generator(), m_score(0)
 {}
 
 void GameState::onStart(Azurite::Game &instance)
@@ -32,7 +33,7 @@ void GameState::onStart(Azurite::Game &instance)
 
             game.stateMachine.stackState(std::make_unique<PauseState>(state));
         }})
-        .build();
+    .build();
 }
 
 void GameState::onTick(Azurite::Game &instance)
@@ -59,9 +60,16 @@ void GameState::onTick(Azurite::Game &instance)
         m_ticks = 0;
         m_targetCounts -= 1;
     }
-    if (m_ticks > 400)
-        instance.stateMachine.leaveCurrentState();
+    if (m_ticks > 400) {
+        ScoreState state(m_score);
+        instance.stateMachine.setState(std::make_unique<ScoreState>(state));
+    }
     m_ticks++;
+
+    while (auto event = readEvent()) {
+        if (event->name == "Target Destroyed")
+            m_score++;
+    }
 }
 
 void GameState::onPause(Azurite::Game &instance)
