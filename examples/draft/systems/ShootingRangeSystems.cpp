@@ -2,6 +2,6 @@
 
 void Starget_destructer(CTarget &target, Azurite::CButton &button, Azurite::CDestructible &destructible)
 {
-    if (button.triggered)
+    if (button.clicked)
         destructible.isAlive = false;
 }
