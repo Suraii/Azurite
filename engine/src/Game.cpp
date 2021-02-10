@@ -134,8 +134,8 @@ void Game::importBuiltIns()
     systemsManager.createSystem(Sanimated_sprite_updater);
     // Life
     componentsStorage.registerComponent<CDeathRattle>();
-    systemsManager.createCoreSystem(Sdestructible_reaper);
     systemsManager.createCoreSystem(Sdeath_rattle_invoker);
+    systemsManager.createCoreSystem(Sdestructible_reaper);
     systemsManager.createSystem(Slifetime_ticker);
     // UI
     componentsStorage.registerComponent<CInputAction>();
