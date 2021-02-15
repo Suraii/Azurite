@@ -115,6 +115,7 @@ void SfmlModule::playSound(const std::string name, float volume, float pitch, bo
     sound.setPitch(pitch);
     sound.setLoop(loop);
 
+    sound.stop();
     sound.play();
 }
 

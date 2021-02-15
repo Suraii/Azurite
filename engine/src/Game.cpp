@@ -121,6 +121,7 @@ void Game::stop()
 #include "Azurite/systems/LifeSystems.hpp"
 #include "Azurite/systems/UISystems.hpp"
 #include "Azurite/systems/MovementSystems.hpp"
+#include "Azurite/systems/SoundSystems.hpp"
 
 void Game::importBuiltIns()
 {
@@ -142,8 +143,11 @@ void Game::importBuiltIns()
     systemsManager.createSystem(Sbutton_sprite_updater);
     systemsManager.createCoreSystem(Sbutton_params_updater);
     systemsManager.createCoreSystem(Sinput_action_invoker);
-    //Movement
+    // Movement
     systemsManager.createSystem(Svelocity_applier);
+    // Sound
+    systemsManager.createSystem(Sbutton_speaker_activator);
+    systemsManager.createCoreSystem(Sspeaker_player);
 }
 
 void Game::enableDebugSystems()
