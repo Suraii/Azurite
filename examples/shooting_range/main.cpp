@@ -24,7 +24,7 @@ int main()
     .useAsDisplayModule();
 
     // Loading assets
-    game.assetModule->get().loadAssets("../examples/draft/assets");
+    game.assetModule->get().loadAssets("../examples/shooting_range/assets");
 
     // Creating a state and adding it in the state queue
     MainState state;
