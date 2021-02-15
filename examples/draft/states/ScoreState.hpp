@@ -3,6 +3,8 @@
 #include "Azurite/StateMachine.hpp"
 #include <random>
 
+// State for the score screen
+
 class ScoreState : public Azurite::AState {
 private:
     int m_score;

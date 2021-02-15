@@ -1,7 +1,6 @@
 #include "PauseState.hpp"
-#include "Azurite/components/CInputAction.hpp"
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CTransform2D.hpp"
+#include "Azurite/components/MovementComponents.hpp"
+#include "Azurite/components/UIComponents.hpp"
 
 
 void PauseState::onStart(Azurite::Game &instance)

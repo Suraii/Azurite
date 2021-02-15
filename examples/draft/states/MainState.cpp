@@ -3,11 +3,9 @@
 
 #include "Azurite/Game.hpp"
 
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CAnimatedSprite.hpp"
-#include "Azurite/components/CTransform2D.hpp"
-#include "Azurite/components/CCollisionBox.hpp"
-#include "Azurite/components/CButton.hpp"
+#include "Azurite/components/MovementComponents.hpp"
+#include "Azurite/components/UIComponents.hpp"
+#include "Azurite/components/SpriteComponents.hpp"
 
 void MainState::onStart(Azurite::Game &instance)
 {

@@ -3,6 +3,8 @@
 #include "Azurite/StateMachine.hpp"
 #include <random>
 
+// State for the game itself
+
 class GameState : public Azurite::AState {
 private:
     unsigned m_ticks;

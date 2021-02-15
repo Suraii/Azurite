@@ -1,10 +1,8 @@
 #include "ScoreState.hpp"
 #include "PauseState.hpp"
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CTransform2D.hpp"
-#include "Azurite/components/CCollisionBox.hpp"
-#include "Azurite/components/CButton.hpp"
+#include "Azurite/components/MovementComponents.hpp"
+#include "Azurite/components/UIComponents.hpp"
 
 constexpr float STARS_ORIGIN = 310;
 constexpr float STARS_INTERSPACE = 15;
