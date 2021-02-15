@@ -2,16 +2,10 @@
 #include "PauseState.hpp"
 #include "ScoreState.hpp"
 #include "Azurite/Game.hpp"
-#include "Azurite/components/CSprite.hpp"
-#include "Azurite/components/CAnimatedSprite.hpp"
-#include "Azurite/components/CTransform2D.hpp"
-#include "Azurite/components/CCollisionBox.hpp"
-#include "Azurite/components/CDestructible.hpp"
-#include "Azurite/components/CButton.hpp"
-#include "Azurite/components/CLifetime.hpp"
-#include "Azurite/components/CVelocity.hpp"
-#include "Azurite/components/CDeathRattle.hpp"
-#include "Azurite/components/CInputAction.hpp"
+#include "Azurite/components/MovementComponents.hpp"
+#include "Azurite/components/LifeComponents.hpp"
+#include "Azurite/components/UIComponents.hpp"
+#include "Azurite/components/SoundComponents.hpp"
 #include "components/CTarget.hpp"
 
 constexpr unsigned TARGET_SUMMON_DELAY = 100;
@@ -59,6 +53,7 @@ void GameState::onTick(Azurite::Game &instance)
             }})
             .withComponent(Azurite::CVelocity{-1 * velocityDistribution(m_generator), 0})
             .withComponent(CTarget{})
+            .withComponent(Azurite::CSpeaker{"gunshot"})
         .build();
         // Updating variables
         m_ticks = 0;
