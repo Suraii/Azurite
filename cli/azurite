@@ -9,7 +9,7 @@ light_cyan="\e[96m"
 chip=$bold$cyan[$light_cyan💎$cyan]$normal
 
 #-Azurite dir root
-azurite_dir=`dirname $0`/.azurite.d
+export AZURITE_DIR=`dirname $0`/.azurite.d
 
 #-TOOLBOX
 parse_colours() {
@@ -27,10 +27,11 @@ azurite_raw() { text="$(parse_colours "$@")" && echo -ne "$text"; }
 azurite_endlog() { echo -ne $normal; }
 
 case "$1" in
-    "help" | "?" | "-h") azurite_speach "Not implemented yet";;
+    "help" | "?" | "-h") $AZURITE_DIR/help.sh;;
     "install") azurite_speach "Not implemented yet";;
     "update") azurite_speach "Not implemented yet";;
     "remove") azurite_speach "Not implemented yet";;
     "version" | "-v" | "-V") azurite_speach "Not implemented yet";;
+    "__including") ;;
     *) azurite_speach "§lUnknown Command: §n'§c$1§n', try §lazurite help§n to get the manual"
 esac
