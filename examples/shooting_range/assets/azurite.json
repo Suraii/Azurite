@@ -1,0 +1,68 @@
+{
+  "sprites": [
+    {
+      "id": 0,
+      "origin_x": 0,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 1,
+      "origin_x": 64,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 2,
+      "origin_x": 128,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 3,
+      "origin_x": 192,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 4,
+      "origin_x": 256,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 5,
+      "origin_x": 320,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 6,
+      "origin_x": 384,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 7,
+      "origin_x": 448,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    },
+    {
+      "id": 8,
+      "origin_x": 512,
+      "origin_y": 0,
+      "width": 63,
+      "height": 130
+    }
+
+  ]
+}

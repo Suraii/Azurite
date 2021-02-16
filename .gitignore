@@ -7,6 +7,13 @@
 *.o
 *.obj
 
+# Cmake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+*.cmake
+build
+
 # Precompiled Headers
 *.gch
 *.pch
