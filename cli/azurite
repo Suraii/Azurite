@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#-FANCY TEXT VARIABLES
+normal="\e[0m"
+bold="\e[1m"
+italic="\e[3m"
+cyan="\e[36m"
+light_cyan="\e[96m"
+chip=$bold$cyan[$light_cyan💎$cyan]$normal
+
+#-Azurite dir root
+azurite_dir=`dirname $0`/.azurite.d
+
+#-TOOLBOX
+parse_colours() {
+    echo "$@" | sed \
+        -e s/§n/"\\$normal"/g \
+        -e s/§c/"\\$cyan"/g \
+        -e s/§l/"\\$light_cyan"/g \
+        -e s/§b/"\\$bold"/g \
+        -e s/§i/"\\$italic"/g;
+}
+
+azurite_speach() { text=$(parse_colours "$@") && echo -e $chip $bold$text$normal; }
+azurite_log() { text=$(parse_colours "$@") && echo -ne $cyan"> "$text; }
+azurite_raw() { text="$(parse_colours "$@")" && echo -ne "$text"; }
+azurite_endlog() { echo -ne $normal; }
+
+case "$1" in
+    "help" | "?" | "-h") azurite_speach "Not implemented yet";;
+    "install") azurite_speach "Not implemented yet";;
+    "update") azurite_speach "Not implemented yet";;
+    "remove") azurite_speach "Not implemented yet";;
+    "version" | "-v" | "-V") azurite_speach "Not implemented yet";;
+    *) azurite_speach "§lUnknown Command: §n'§c$1§n', try §lazurite help§n to get the manual"
+esac
