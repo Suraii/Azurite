@@ -31,7 +31,7 @@ case "$1" in
     "install") $AZURITE_DIR/install.sh;;
     "update") $AZURITE_DIR/update.sh;;
     "remove") $AZURITE_DIR/remove.sh;;
-    "version" | "-v" | "-V") azurite_speach "Not implemented yet";;
+    "version" | "-v" | "-V") $AZURITE_DIR/version.sh;;
     "__including") ;;
     *) azurite_speach "§lUnknown Command: §n'§c$1§n', try §lazurite help§n to get the manual"
 esac
