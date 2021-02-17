@@ -2,7 +2,7 @@
 
 # AZURITE CLI UPDATE SCRIPT
 
-source $AZURITE_DIR/../azurite "__including"
+source $AZURITE_BIN "__including"
 
 azurite_log "Parsing current files..."
 

@@ -2,7 +2,7 @@
 
 # AZURITE CLI HELP SCRIPT
 
-source $AZURITE_DIR/../azurite "__including"
+source $AZURITE_BIN "__including"
 
 azurite_raw "§lhelp\t: §ndisplay this menu\n"
 azurite_raw "§linstall\t: §ninstall the latest version of the Azurite engine library\n"

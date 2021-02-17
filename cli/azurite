@@ -9,7 +9,13 @@ light_cyan="\e[96m"
 chip=$bold$cyan[$light_cyan💎$cyan]$normal
 
 #-Azurite dir root
-export AZURITE_DIR=`dirname $0`/.azurite.d
+if [ -d `dirname $0`/.azuride.d ];
+then export AZURITE_DIR=`dirname $0`/.azurite.d
+else export AZURITE_DIR="$HOME/.azurite.d"
+fi
+
+#-Azurite bin root
+export AZURITE_BIN=$0
 
 #-TOOLBOX
 parse_colours() {

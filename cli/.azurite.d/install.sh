@@ -2,7 +2,7 @@
 
 # AZURITE CLI INSTALL SCRIPT
 
-source $AZURITE_DIR/../azurite "__including"
+source $AZURITE_BIN "__including"
 
 azurite_speach "Looking for previous installation"
 
