@@ -15,7 +15,6 @@ azurite_log "Parsing azurite files..."
 
 azurite_endlog
 
-
 azurite_speach "Downloading latest sources"
 
 azurite_log "creating installation directory..."
@@ -37,7 +36,7 @@ mkdir `dirname $0`/data/build && azurite_raw "§l🗸\n" && cd `dirname $0`/data
 
 azurite_log "installing §lconan§c dependencies\n"
 
-conan install .. && azurite_raw "§l🗸\n" || exit 1
+conan install .. --build=missing && azurite_raw "§l🗸\n" || exit 1
 
 azurite_log "generating §lcmake§c files...\n"
 
@@ -45,6 +44,20 @@ cmake .. && azurite_raw "§l🗸\n" || exit 1
 
 azurite_log "compiling sources...\n"
 
-cmake --build && azurite_raw "§l🗸\n" || exit 1
+(cmake --build . -- -j) && azurite_raw "§l🗸\n" || exit 1
 
 azurite_endlog
+
+azurite_speach "Installing Azurite"
+
+azurite_log "installing binaries..."
+
+azurite_raw "§lroot §cpermissions needed: "
+
+sudo libtool --mode=install install -c ./lib/libazurite_engine.so `systemd-path system-library-private` && azurite_raw "§l🗸\n" || exit 1
+
+azurite_log "installing headers..."
+
+sudo cp -r ../engine/include/Azurite `systemd-path system-include` && azurite_raw "§l🗸\n" || exit 1
+
+azurite_speach "Installation complete !"
