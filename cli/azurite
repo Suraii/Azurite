@@ -29,7 +29,7 @@ azurite_endlog() { echo -ne $normal; }
 case "$1" in
     "help" | "?" | "-h") $AZURITE_DIR/help.sh;;
     "install") $AZURITE_DIR/install.sh;;
-    "update") azurite_speach "Not implemented yet";;
+    "update") $AZURITE_DIR/update.sh;;
     "remove") azurite_speach "Not implemented yet";;
     "version" | "-v" | "-V") azurite_speach "Not implemented yet";;
     "__including") ;;
