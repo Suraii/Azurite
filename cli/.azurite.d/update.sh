@@ -4,6 +4,12 @@
 
 source $AZURITE_DIR/../azurite "__including"
 
+azurite_log "Parsing current files..."
+
+if [ -d `dirname $0`/data ];
+then azurite_raw "§l🗸\n";
+else azurite_raw "\nAzurite isn't installed on you computer yet, run §lazurite install§c before pls\n" && azurite_endlog && exit 1;
+fi
 
 azurite_speach "Looking for new versions"
 

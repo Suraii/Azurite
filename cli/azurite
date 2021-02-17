@@ -30,7 +30,7 @@ case "$1" in
     "help" | "?" | "-h") $AZURITE_DIR/help.sh;;
     "install") $AZURITE_DIR/install.sh;;
     "update") $AZURITE_DIR/update.sh;;
-    "remove") azurite_speach "Not implemented yet";;
+    "remove") $AZURITE_DIR/remove.sh;;
     "version" | "-v" | "-V") azurite_speach "Not implemented yet";;
     "__including") ;;
     *) azurite_speach "§lUnknown Command: §n'§c$1§n', try §lazurite help§n to get the manual"

@@ -8,10 +8,11 @@ azurite_speach "Looking for previous installation"
 
 azurite_log "Parsing azurite files..."
 
-[ -d `dirname $0`/data ]\
-|| (azurite_raw "§l🗸" && azurite_raw "\n§c§iFound nothing !\n")\
-&& (azurite_raw "§l✖\n" && azurite_raw "§cFound some old files\n"\
-    && azurite_log "Deleting old files..." && rm -rf `dirname $0`/data || exit 1 && azurite_raw "§l🗸\n")
+if [ -d `dirname $0`/data ];
+then (azurite_raw "§l✖\n" && azurite_raw "§cFound some old files\n"\
+    && azurite_log "Deleting old files..." && rm -rf `dirname $0`/data || exit 1 && azurite_raw "§l🗸\n");
+else (azurite_raw "§l🗸" && azurite_raw "\n§c§iFound nothing !\n");
+fi
 
 azurite_endlog
 
