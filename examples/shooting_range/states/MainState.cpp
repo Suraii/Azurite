@@ -47,11 +47,11 @@ void MainState::onTick(Azurite::Game &instance)
             instance.stateMachine.leaveCurrentState();
 }
 
-void MainState::onPause(Azurite::Game &instance)
+void MainState::onPause(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void MainState::onResume(Azurite::Game &instance)
+void MainState::onResume(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void MainState::onStop(Azurite::Game &instance)
+void MainState::onStop(__attribute__((unused))Azurite::Game &instance)
 {}

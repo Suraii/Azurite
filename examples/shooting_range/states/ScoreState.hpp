@@ -7,7 +7,7 @@
 
 class ScoreState : public Azurite::AState {
 private:
-    int m_score;
+    unsigned m_score;
     unsigned m_ticks;
     unsigned m_starsFilled;
 public:
