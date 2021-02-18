@@ -46,12 +46,12 @@ void ScoreState::onTick(Azurite::Game &instance)
     m_ticks++;
 }
 
-void ScoreState::onPause(Azurite::Game &instance)
+void ScoreState::onPause(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void ScoreState::onResume(Azurite::Game &instance)
+void ScoreState::onResume(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void ScoreState::onStop(Azurite::Game &instance)
+void ScoreState::onStop(__attribute__((unused))Azurite::Game &instance)
 {}
 

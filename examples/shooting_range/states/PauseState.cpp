@@ -21,14 +21,14 @@ void PauseState::onStart(Azurite::Game &instance)
     .build();
 }
 
-void PauseState::onTick(Azurite::Game &instance)
+void PauseState::onTick(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void PauseState::onPause(Azurite::Game &instance)
+void PauseState::onPause(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void PauseState::onResume(Azurite::Game &instance)
+void PauseState::onResume(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void PauseState::onStop(Azurite::Game &instance)
+void PauseState::onStop(__attribute__((unused))Azurite::Game &instance)
 {}
