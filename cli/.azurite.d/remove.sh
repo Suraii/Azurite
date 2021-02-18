@@ -4,13 +4,13 @@
 
 source $AZURITE_BIN "__including"
 
+
 azurite_log "Parsing current files..."
 
 if [ -d `dirname $0`/data ];
 then azurite_raw "§l🗸\n";
 else azurite_raw "\nAzurite isn't installed on you computer\n" && azurite_endlog && exit 1;
 fi
-
 
 azurite_speach "Goodbye dear user :'("
 
