@@ -73,11 +73,11 @@ void GameState::onTick(Azurite::Game &instance)
     }
 }
 
-void GameState::onPause(Azurite::Game &instance)
+void GameState::onPause(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void GameState::onResume(Azurite::Game &instance)
+void GameState::onResume(__attribute__((unused))Azurite::Game &instance)
 {}
 
-void GameState::onStop(Azurite::Game &instance)
+void GameState::onStop(__attribute__((unused))Azurite::Game &instance)
 {}

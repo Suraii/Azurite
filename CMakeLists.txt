@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name & version
-project(Azurite VERSION 0.1)
+project(Azurite VERSION 1.0.1)
 
 # C++ Compiler (needed to support modern C++)
 set(CMAKE_CXX_COMPILER /bin/clang++)
