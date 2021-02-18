@@ -27,7 +27,7 @@ if [ $LOCAL = $REMOTE ]; then
     azurite_raw "Everything is §lUp-to-date §c!\n" && azurite_endlog && exit 0
 elif [ $LOCAL = $BASE ]; then
     azurite_raw "New version found !\n" && azurite_log "Downloading new version..." && git pull origin main \
-    && azurite_log "installing binaries..." && azurite_raw "§lroot §cpermissions needed: " && \
+    && azurite_log "installing binaries..." && azurite_raw "§lroot §cpermissions needed: " && cd `dirname $0`/data/build \
     sudo libtool --mode=install install -c ./lib/libazurite_engine.so `systemd-path system-library-private` && azurite_raw "§l🗸\n" || exit 1 && \
     azurite_log "installing headers..." && \
     sudo cp -r ../engine/include/Azurite `systemd-path system-include` && azurite_raw "§l🗸\n" || exit 1 && \
